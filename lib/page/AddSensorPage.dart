@@ -158,7 +158,7 @@ class _AddSensorPageState extends State<AddSensorPage> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text('등록되지 않은 기기입니다'),
-                            duration: Duration(seconds: 1),
+                            duration: Duration(seconds: 2),
                           ),
                         );
                       }
@@ -239,7 +239,7 @@ class _AddSensorPageState extends State<AddSensorPage> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text('인증 시간이 만료되었습니다'),
-                                duration: Duration(seconds: 1),
+                                duration: Duration(seconds: 2),
                               ),
                             );
                             break;
@@ -247,7 +247,7 @@ class _AddSensorPageState extends State<AddSensorPage> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text('인증 코드가 일치하지 않습니다'),
-                                duration: Duration(seconds: 1),
+                                duration: Duration(seconds: 2),
                               ),
                             );
                             break;
@@ -257,7 +257,7 @@ class _AddSensorPageState extends State<AddSensorPage> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text('서버와의 통신 과정에서 오류가 발생했습니다'),
-                                duration: Duration(seconds: 1),
+                                duration: Duration(seconds: 2),
                               ),
                             );
                             break;

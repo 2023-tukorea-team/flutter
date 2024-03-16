@@ -85,7 +85,15 @@ class _MainPageState extends State<MainPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Flutter Demo'),
+          title: Text('연결된 기기'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {
+                _goToAddSensorPage(widget.userid);
+              },
+            ),
+          ],
         ),
         body: FutureBuilder<List<Usersensor>>(
           future: fetchUsersensorData(),
@@ -174,7 +182,7 @@ class _MainPageState extends State<MainPage> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('로그아웃에 실패했습니다.'),
-                  duration: Duration(seconds: 1),
+                  duration: Duration(seconds: 2),
                 ),
               );
             }

@@ -447,7 +447,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('회원가입에 실패했습니다.'),
-                        duration: Duration(seconds: 1),
+                        duration: Duration(seconds: 2),
                       ),
                     );
                   }
