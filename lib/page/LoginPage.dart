@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:team2/provider/UserProvider.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../config/ApiConfig.dart';
 import '../models/User.dart';
@@ -29,6 +30,22 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     _retrieveFirebaseToken();
     requestNotificationPermission(context);
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      RemoteNotification? notification = message.notification;
+
+      if (notification != null) {
+        FlutterLocalNotificationsPlugin().show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          const NotificationDetails(
+            android: AndroidNotificationDetails('high_importance_channel', 'high_importance_nofitication', importance: Importance.max,
+            ),
+          ),
+        );
+      }
+    });
+    super.initState();
   }
 
   Future<bool> requestNotificationPermission(BuildContext context) async {

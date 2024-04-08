@@ -67,10 +67,10 @@ class _DetailPageState extends State<DetailPage> {
                       subtitle: Row(
                         children: [
                           _buildSensorStatus('시동 ', sensorlog.start),
-                          _buildSensorStatus('문열림 ', sensorlog.door),
+                          _buildSensorStatus('문잠금 ', sensorlog.door),
                           _buildSensorStatus('사람 ', sensorlog.person),
                           Text('속도:${sensorlog.speed} '),
-                          Text('경고:${sensorlog.warning} '),
+                          _buildSensorStatusWarning('경고 ', sensorlog.warning),
                         ],
                       ),
                     ),
@@ -92,6 +92,16 @@ class _DetailPageState extends State<DetailPage> {
       name,
       style: TextStyle(
         color: value == 1 ? Colors.red : Colors.black45,
+        fontWeight: value == 1 ? FontWeight.bold : FontWeight.normal,
+      ),
+    );
+  }
+
+  Widget _buildSensorStatusWarning(String name, int value) {
+    return Text(
+      '$name: $value',
+      style: TextStyle(
+        color: value != 0 ? Colors.red : Colors.black45,
         fontWeight: value == 1 ? FontWeight.bold : FontWeight.normal,
       ),
     );
