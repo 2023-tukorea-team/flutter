@@ -22,6 +22,7 @@ class _DetailPageState extends State<DetailPage> {
   @override
   void initState() {
     super.initState();
+    readMessage();
   }
 
   Future<List<Sensorlog>> fetchSensorlogData() async {
@@ -35,6 +36,27 @@ class _DetailPageState extends State<DetailPage> {
       return sensorlogJsonList.map((json) => Sensorlog.fromJson(json)).toList();
     } else {
       throw Exception('서버로부터 데이터를 읽어오는 데 실패했습니다.');
+    }
+  }
+
+  Future<bool> readMessage() async {
+    final response = await http.post(
+      Uri.parse('$url/usersensor/readstate'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'userid': widget.usersensor?.userid, 'sensorid': widget.usersensor?.sensorid}),
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> jsonData = jsonDecode(
+          utf8.decode(response.bodyBytes));
+      bool result = jsonData['result'];
+      String description = jsonData['description'];
+      print(result);
+      print(description);
+      return result;
+    } else {
+      print("알림 상태 변환 중 오류가 발생했습니다 (${response.statusCode})");
+      return false;
     }
   }
 

@@ -20,7 +20,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  List<dynamic> _data = [];
+  List<Usersensor> _usersensorData = [];
   String url = ApiConfig.baseUrl;
   DateTime? lastBackPressedTime;
 
@@ -30,7 +30,7 @@ class _MainPageState extends State<MainPage> {
     fetchUsersensorData();
   }
 
-  Future<List<Usersensor>> fetchUsersensorData() async {
+  Future<void> fetchUsersensorData() async {
     final response = await http.post(
       Uri.parse('$url/usersensor/list'),
       headers: {'Content-Type': 'application/json'},
@@ -38,7 +38,10 @@ class _MainPageState extends State<MainPage> {
     );
     if (response.statusCode == 200) {
       List<dynamic> usersensorJsonList = json.decode(response.body);
-      return usersensorJsonList.map((json) => Usersensor.fromJson(json)).toList();
+      List<Usersensor> newData = usersensorJsonList.map((json) => Usersensor.fromJson(json)).toList();
+      setState(() {
+        _usersensorData = newData;
+      });
     } else {
       throw Exception('서버로부터 데이터를 읽어오는 데 실패했습니다.');
     }
@@ -93,64 +96,17 @@ class _MainPageState extends State<MainPage> {
                 _goToAddSensorPage(widget.userid);
               },
             ),
+            IconButton(
+              icon: Icon(Icons.refresh),
+              onPressed: () {
+                setState(() {
+                  fetchUsersensorData();
+                });
+              },
+            )
           ],
         ),
-        body: FutureBuilder<List<Usersensor>>(
-          future: fetchUsersensorData(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(child: Text("Error: ${snapshot.error}"));
-            } else if (snapshot.hasData && snapshot.data!.isEmpty) {
-              return Center(child: Text("등록된 기기가 없습니다."));
-            } else {
-              return SingleChildScrollView(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: snapshot.data?.length ?? 0,
-                  itemBuilder: (context, index) {
-                    var usersensor = snapshot.data?[index];
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => DetailPage(usersensor: usersensor)),
-                        );
-                      },
-                      child: Card(
-                        margin: EdgeInsets.all(8.0),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 8),
-                              Text(
-                                '기기명 : ${usersensor?.sensorid}',
-                                style: TextStyle(
-                                  fontSize: 24, // 글씨 크기
-                                  fontWeight: FontWeight.bold, // 굵은 글꼴
-                                  color: Colors.blueGrey, // 텍스트 색상을 파란색으로 설정
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                '마지막 접속 시간: ${usersensor?.codetime}',
-                                style: TextStyle(fontSize: 18),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              );
-            }
-          },
-        ),
+        body: _buildUserSensorList(),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             bool islogout = await logout(widget.userid);
@@ -189,9 +145,67 @@ class _MainPageState extends State<MainPage> {
           },
           child: Icon(Icons.logout),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat, // 가운데 정렬
-      ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      )
     );
+  }
+
+  Widget _buildUserSensorList() {
+    if (_usersensorData.isEmpty) {
+      return Center(child: Text("등록된 기기가 없습니다!."));
+    } else {
+      return ListView.builder(
+        itemCount: _usersensorData.length,
+        itemBuilder: (context, index) {
+          var usersensor = _usersensorData[index];
+          return InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DetailPage(usersensor: usersensor)),
+              );
+            },
+            child: Card(
+              margin: EdgeInsets.all(8.0),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          usersensor.state == 1 ? Icons.warning : Icons.check_circle,
+                          color: usersensor.state == 1 ? Colors.red : Colors.green,
+                          size: 24,
+                        ),
+                        SizedBox(width: 8),
+                        Text(
+                          '기기명 : ${usersensor.sensorid}',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueGrey,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          '마지막 접속 시간: ${usersensor.codetime}',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    }
   }
 
   void _goToAddSensorPage(String userid) {

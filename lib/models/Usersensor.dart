@@ -6,6 +6,7 @@ class Usersensor {
   final int checkcode;
   final int direct;
   final DateTime codetime;
+  final int state;
 
   Usersensor({
     required this.id,
@@ -14,7 +15,8 @@ class Usersensor {
     required this.code,
     required this.checkcode,
     required this.direct,
-    required this.codetime
+    required this.codetime,
+    required this.state
   });
 
   factory Usersensor.fromJson(Map<String, dynamic> json) {
@@ -26,6 +28,7 @@ class Usersensor {
       checkcode: json['checkcode'] is int ? json['checkcode'] : int.parse(json['checkcode'] ?? '0'),
       direct: json['direct'] is int ? json['direct'] : int.parse(json['direct'] ?? '0'),
       codetime: DateTime.parse(json['codetime']),
+      state: json['state'] is int ? json['state'] : int.parse(json['state'] ?? '0'),
     );
   }
 }
