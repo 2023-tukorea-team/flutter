@@ -166,6 +166,7 @@ class _MainPageState extends State<MainPage> {
               );
             },
             child: Card(
+              color: usersensor.state == 1 ? Color(0xFFFFCDD2) : null,
               margin: EdgeInsets.all(8.0),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -175,8 +176,8 @@ class _MainPageState extends State<MainPage> {
                     Row(
                       children: [
                         Icon(
-                          usersensor.state == 1 ? Icons.warning : Icons.check_circle,
-                          color: usersensor.state == 1 ? Colors.red : Colors.green,
+                          usersensor.state == 1 ? Icons.warning : Icons.panorama_fish_eye,
+                          color: usersensor.state == 1 ? Colors.red : Colors.blueGrey,
                           size: 24,
                         ),
                         SizedBox(width: 8),
