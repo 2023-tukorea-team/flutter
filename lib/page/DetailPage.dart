@@ -18,10 +18,12 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   String url = ApiConfig.baseUrl;
+  late Future<List<Sensorlog>> _sensorlogFuture;
 
   @override
   void initState() {
     super.initState();
+    _sensorlogFuture = fetchSensorlogData();
     readMessage();
   }
 
@@ -60,51 +62,124 @@ class _DetailPageState extends State<DetailPage> {
     }
   }
 
+  void refreshData() {
+    setState(() {
+      _sensorlogFuture = fetchSensorlogData();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.usersensor!.sensorid),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: FutureBuilder<List<Sensorlog>>(
-          future: fetchSensorlogData(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(child: Text("Error: ${snapshot.error}"));
-            } else if (snapshot.hasData) {
-              if (snapshot.data!.isEmpty) {
-                return _buildNoLogsCard();
-              }
-              return ListView.builder(
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) {
-                  final sensorlog = snapshot.data![index];
-                  return Card(
-                    child: ListTile(
-                      title: Text('${sensorlog.logtime}'),
-                      subtitle: Row(
-                        children: [
-                          _buildSensorStatus('시동 ', sensorlog.start),
-                          _buildSensorStatus('문잠금 ', sensorlog.door),
-                          _buildSensorStatus('사람 ', sensorlog.person),
-                          Text('속도:${sensorlog.speed} '),
-                          _buildSensorStatusWarning('경고 ', sensorlog.warning),
-                        ],
-                      ),
-                    ),
-                  );
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Row(
+            children: [
+              Expanded(
+                child: Text(widget.usersensor!.sensorid),
+              ),
+              IconButton(
+                icon: Icon(Icons.refresh),
+                onPressed: () {
+                  refreshData();
                 },
-              );
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
-          },
+              ),
+            ],
+          ),
+          bottom: TabBar(
+            tabs: [
+              Tab(text: '알림 기록'),
+              Tab(text: '로그 기록'),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            _buildAlertLogTab(),
+            _buildSensorLogTab(),
+          ],
         ),
       ),
+    );
+  }
+
+  Widget _buildAlertLogTab() {
+    return FutureBuilder<List<Sensorlog>>(
+      future: _sensorlogFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text("Error: ${snapshot.error}"));
+        } else if (snapshot.hasData) {
+          final filteredLogs = snapshot.data!.where((log) => log.warning != 0).toList();
+          if (filteredLogs.isEmpty) {
+            return _buildNoLogsCard();
+          }
+          return ListView.builder(
+            itemCount: filteredLogs.length,
+            itemBuilder: (context, index) {
+              final sensorlog = filteredLogs[index];
+              return Card(
+                child: ListTile(
+                  title: Text('${sensorlog.logtime}'),
+                  subtitle: Row(
+                    children: [
+                      _buildSensorStatus('시동 ', sensorlog.start),
+                      _buildSensorStatus('문잠금 ', sensorlog.door),
+                      _buildSensorStatus('사람 ', sensorlog.person),
+                      Text('속도:${sensorlog.speed} '),
+                      _buildSensorStatusWarning('경고 ', sensorlog.warning),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
+    );
+  }
+
+  Widget _buildSensorLogTab() {
+    return FutureBuilder<List<Sensorlog>>(
+      future: _sensorlogFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text("Error: ${snapshot.error}"));
+        } else if (snapshot.hasData) {
+          if (snapshot.data!.isEmpty) {
+            return _buildNoLogsCard();
+          }
+          return ListView.builder(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) {
+              final sensorlog = snapshot.data![index];
+              return Card(
+                child: ListTile(
+                  title: Text('${sensorlog.logtime}'),
+                  subtitle: Row(
+                    children: [
+                      _buildSensorStatus('시동 ', sensorlog.start),
+                      _buildSensorStatus('문잠금 ', sensorlog.door),
+                      _buildSensorStatus('사람 ', sensorlog.person),
+                      Text('속도:${sensorlog.speed} '),
+                      _buildSensorStatusWarning('경고 ', sensorlog.warning),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
     );
   }
 
@@ -134,7 +209,7 @@ class _DetailPageState extends State<DetailPage> {
       child: Padding(
         padding: EdgeInsets.all(16.0),
         child: Text(
-          '저장된 로그가 없습니다',
+          '저장된 기록이 없습니다',
           style: TextStyle(fontSize: 16.0),
         ),
       ),
