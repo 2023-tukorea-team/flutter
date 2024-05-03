@@ -9,7 +9,6 @@ import 'AddSensorPage.dart';
 import '../config/ApiConfig.dart';
 import 'DetailPage.dart';
 import '../models/Usersensor.dart';
-import 'LoginPage.dart';
 
 class MainPage extends StatefulWidget {
   final String userid;
@@ -37,7 +36,8 @@ class _MainPageState extends State<MainPage> {
       body: jsonEncode({'userid': widget.userid}),
     );
     if (response.statusCode == 200) {
-      List<dynamic> usersensorJsonList = json.decode(response.body);
+      String responseBody = utf8.decode(response.bodyBytes);
+      List<dynamic> usersensorJsonList = json.decode(responseBody);
       List<Usersensor> newData = usersensorJsonList.map((json) => Usersensor.fromJson(json)).toList();
       setState(() {
         _usersensorData = newData;
@@ -107,45 +107,6 @@ class _MainPageState extends State<MainPage> {
           ],
         ),
         body: _buildUserSensorList(),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            bool islogout = await logout(widget.userid);
-            print(islogout);
-            if (islogout) {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text("로그아웃 성공"),
-                    content: Text("로그아웃에 성공했습니다"),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (context) => LoginPage()),
-                                (Route<dynamic> route) => false,
-                          );
-                        },
-                        child: Text("확인"),
-                      ),
-                    ],
-                  );
-                },
-              );
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('로그아웃에 실패했습니다.'),
-                  duration: Duration(seconds: 2),
-                ),
-              );
-            }
-          },
-          child: Icon(Icons.logout),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       )
     );
   }

@@ -25,10 +25,10 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _isIdLength = false;         // 아이디 자리 수 (6~12자)
   bool _isPasswordLength = false;   // 비밀번호 자리 수
   bool _isPasswordCheck = false;    // 비밀번호 일치 여부
-  bool _isEmailCheck = false;          // 아이디가 중복확인이 되었는지
+  bool _isEmailCheck = false;       // 아이디가 중복확인이 되었는지
   bool _isEmailForm = false;        // 이메일 양식
   bool _isEmailAvailable = false;   // 이메일 중복 확인
-  bool _isPhoneCheck = false;          // 아이디가 중복확인이 되었는지
+  bool _isPhoneCheck = false;       // 아이디가 중복확인이 되었는지
   bool _isPhoneForm = false;        // 전화번호 양식
   bool _isPhoneAvailable = false;   // 전화번호 중복 확인
 

@@ -10,6 +10,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../config/ApiConfig.dart';
 import '../models/User.dart';
+import 'BottomBar.dart';
 import 'MainPage.dart';
 import 'SignupPage.dart';
 
@@ -125,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
       Provider.of<UserProvider>(context, listen: false).setUser(user);
 
       // 메인페이지로 이동
-      _goToMainPage(id);
+      _goToMainPage(user);
 
     } else {
       showDialog(
@@ -148,10 +149,10 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void _goToMainPage(String userid) {
+  void _goToMainPage(User user) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MainPage(userid: userid)),
+      MaterialPageRoute(builder: (context) => BottomBar(user: user)),
     );
   }
 
