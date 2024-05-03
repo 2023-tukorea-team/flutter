@@ -182,7 +182,7 @@ class _MainPageState extends State<MainPage> {
                         ),
                         SizedBox(width: 8),
                         Text(
-                          '기기명 : ${usersensor.sensorid}',
+                          '이름 : ${usersensor.name}',
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,

@@ -107,7 +107,7 @@ class _DetailPageState extends State<DetailPage> {
                       MaterialPageRoute(builder: (context) => DetailUpdatePage(widget.usersensor)),
                     );
                   },
-                  child: Text(widget.usersensor!.sensorid),
+                  child: Text(widget.usersensor!.name),
                 ),
               ),
               IconButton(
