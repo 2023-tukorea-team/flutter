@@ -23,7 +23,7 @@ class _BottomBarState extends State<BottomBar> {
   void initState() {
     super.initState();
     _widgetOptions = <Widget>[
-      MainPage(userid: widget.user.id),
+      MainPage(user: widget.user),
       UserPage(user: widget.user),
     ];
   }

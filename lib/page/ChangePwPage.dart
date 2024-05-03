@@ -6,13 +6,15 @@ import 'package:http/http.dart' as http;
 import 'package:team2/page/DetailUpdatePage.dart';
 
 import '../config/ApiConfig.dart';
+import '../models/User.dart';
+import 'BottomBar.dart';
 import 'LoginPage.dart';
 import 'MainPage.dart';
 
 class ChangePwPage extends StatefulWidget {
-  final String userid;
+  final User user;
 
-  ChangePwPage({required this.userid});
+  ChangePwPage({required this.user});
 
   @override
   _ChangePwPageState createState() => _ChangePwPageState();
@@ -25,9 +27,9 @@ class _ChangePwPageState extends State<ChangePwPage> {
   void _changePw() {
     String updatedText = _ChangePwController.text;
     if (updatedText.length >= 6) {
-      _ChangePwCheck(widget.userid, updatedText).then((updateSuccess) {
+      _ChangePwCheck(widget.user.id, updatedText).then((updateSuccess) {
         if (updateSuccess) {
-          _goToMainPage(widget.userid);
+          _goToMainPage(widget.user.id);
         }
       });
     } else {
@@ -95,7 +97,7 @@ class _ChangePwPageState extends State<ChangePwPage> {
   void _goToMainPage(String userid) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MainPage(userid: userid)),
+      MaterialPageRoute(builder: (context) => BottomBar(user: widget.user)),
     );
   }
 }

@@ -5,13 +5,16 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:team2/config/ApiConfig.dart';
 
+import '../models/User.dart';
 import '../models/Usersensor.dart';
+import 'BottomBar.dart';
 import 'MainPage.dart';
 
 class DetailUpdatePage extends StatefulWidget {
-  final Usersensor? usersensor;
+  final Usersensor usersensor;
+  final User user;
 
-  DetailUpdatePage(this.usersensor);
+  DetailUpdatePage(this.usersensor, this.user);
 
   @override
   _DetailUpdatePageState createState() => _DetailUpdatePageState();
@@ -26,7 +29,7 @@ class _DetailUpdatePageState extends State<DetailUpdatePage> {
     if (updatedText.length >= 3) {
       _renameUserSensor(widget.usersensor!.userid, widget.usersensor!.sensorid, updatedText).then((updateSuccess) {
         if (updateSuccess) {
-          _goToMainPage(widget.usersensor!.userid);
+          _goToMainPage(widget.user);
         }
       });
     } else {
@@ -89,10 +92,10 @@ class _DetailUpdatePageState extends State<DetailUpdatePage> {
     );
   }
 
-  void _goToMainPage(String userid) {
+  void _goToMainPage(User user) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MainPage(userid: userid)),
+      MaterialPageRoute(builder: (context) => BottomBar(user: user)),
     );
   }
 }

@@ -5,14 +5,17 @@ import 'package:http/http.dart' as http;
 import 'package:team2/config/ApiConfig.dart';
 
 import '../models/Sensorlog.dart';
+import '../models/User.dart';
 import '../models/Usersensor.dart';
+import 'BottomBar.dart';
 import 'DetailUpdatePage.dart';
 import 'MainPage.dart';
 
 class DetailPage extends StatefulWidget {
-  final Usersensor? usersensor;
+  final Usersensor usersensor;
+  final User user;
 
-  DetailPage({this.usersensor});
+  DetailPage({required this.usersensor, required this.user});
 
   @override
   _DetailPageState createState() => _DetailPageState();
@@ -104,7 +107,7 @@ class _DetailPageState extends State<DetailPage> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => DetailUpdatePage(widget.usersensor)),
+                      MaterialPageRoute(builder: (context) => DetailUpdatePage(widget.usersensor, widget.user)),
                     );
                   },
                   child: Text(widget.usersensor!.name),
@@ -115,7 +118,7 @@ class _DetailPageState extends State<DetailPage> {
                 onPressed: () {
                   deleteData(widget.usersensor!.userid, widget.usersensor!.sensorid).then((deleteSuccess) {
                     if (deleteSuccess) {
-                      _goToMainPage(widget.usersensor!.userid);
+                      _goToMainPage(widget.user);
                     }
                   });
                 }
@@ -257,10 +260,10 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 
-  void _goToMainPage(String userid) {
+  void _goToMainPage(User user) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MainPage(userid: userid)),
+      MaterialPageRoute(builder: (context) => BottomBar(user: user)),
     );
   }
 }

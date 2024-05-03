@@ -5,14 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/User.dart';
 import 'AddSensorPage.dart';
 import '../config/ApiConfig.dart';
 import 'DetailPage.dart';
 import '../models/Usersensor.dart';
 
 class MainPage extends StatefulWidget {
-  final String userid;
-  MainPage({required this.userid});
+  final User user;
+  MainPage({required this.user});
 
   @override
   _MainPageState createState() => _MainPageState();
@@ -33,7 +34,7 @@ class _MainPageState extends State<MainPage> {
     final response = await http.post(
       Uri.parse('$url/usersensor/list'),
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'userid': widget.userid}),
+      body: jsonEncode({'userid': widget.user.id}),
     );
     if (response.statusCode == 200) {
       String responseBody = utf8.decode(response.bodyBytes);
@@ -93,7 +94,7 @@ class _MainPageState extends State<MainPage> {
             IconButton(
               icon: Icon(Icons.add),
               onPressed: () {
-                _goToAddSensorPage(widget.userid);
+                _goToAddSensorPage(widget.user);
               },
             ),
             IconButton(
@@ -123,7 +124,7 @@ class _MainPageState extends State<MainPage> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => DetailPage(usersensor: usersensor)),
+                MaterialPageRoute(builder: (context) => DetailPage(usersensor: usersensor, user: widget.user)),
               );
             },
             child: Card(
@@ -170,10 +171,10 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
-  void _goToAddSensorPage(String userid) {
+  void _goToAddSensorPage(User user) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => AddSensorPage(userid: userid)),
+      MaterialPageRoute(builder: (context) => AddSensorPage(user: user)),
     );
   }
 }

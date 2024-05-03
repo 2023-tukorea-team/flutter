@@ -107,7 +107,7 @@ class _UserPageState extends State<UserPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ChangePwPage(userid: widget.user.id),
+                    builder: (context) => ChangePwPage(user: widget.user),
                   ),
                 );
               },

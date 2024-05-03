@@ -6,11 +6,13 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:team2/config/ApiConfig.dart';
 
+import '../models/User.dart';
+import 'BottomBar.dart';
 import 'MainPage.dart';
 
 class AddSensorPage extends StatefulWidget {
-  final String userid;
-  AddSensorPage({required this.userid});
+  final User user;
+  AddSensorPage({required this.user});
 
   @override
   _AddSensorPageState createState() => _AddSensorPageState();
@@ -89,10 +91,10 @@ class _AddSensorPageState extends State<AddSensorPage> {
     }
   }
 
-  void _goToMainPage(String userid) {
+  void _goToMainPage(User user) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MainPage(userid: userid)),
+      MaterialPageRoute(builder: (context) => BottomBar(user: user)),
     );
   }
 
@@ -148,7 +150,7 @@ class _AddSensorPageState extends State<AddSensorPage> {
                         ? () async {
                       sensorid = _macAddressController.text.trim();
                       bool isAvailable = await _checkMacAddress(
-                          widget.userid, sensorid!);
+                          widget.user.id, sensorid!);
                       setState(() {
                         _isCheckMacAddress = isAvailable;
                         _startTimer();
@@ -209,9 +211,9 @@ class _AddSensorPageState extends State<AddSensorPage> {
                     ElevatedButton(
                       onPressed: () async {
                         String code = _verificationController.text.trim();
-                        print('${widget.userid}, ${sensorid}, ${code}');
+                        print('${widget.user.id}, ${sensorid}, ${code}');
                         int codeNumber = await _checkMacAddressCode(widget
-                            .userid, sensorid!, code);
+                            .user.id, sensorid!, code);
                         print(codeNumber);
                         switch (codeNumber) {
                           case 1: // 성공 메세지 반환 + 메인 페이지로 이동
@@ -226,7 +228,7 @@ class _AddSensorPageState extends State<AddSensorPage> {
                                       onPressed: () {
                                         Navigator.of(context).pop(); // 다이얼로그 닫기
                                         _goToMainPage(
-                                            widget.userid); // 메인 페이지로 이동
+                                            widget.user); // 메인 페이지로 이동
                                       },
                                       child: Text("확인"),
                                     ),
