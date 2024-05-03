@@ -6,6 +6,8 @@ import 'package:team2/config/ApiConfig.dart';
 
 import '../models/Sensorlog.dart';
 import '../models/Usersensor.dart';
+import 'DetailUpdatePage.dart';
+import 'MainPage.dart';
 
 class DetailPage extends StatefulWidget {
   final Usersensor? usersensor;
@@ -62,6 +64,27 @@ class _DetailPageState extends State<DetailPage> {
     }
   }
 
+  Future<bool> deleteData(String userid, String sensorid) async {
+    final response = await http.post(
+      Uri.parse('$url/usersensor/delete'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'userid': userid, 'sensorid': sensorid}),
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> jsonData = jsonDecode(
+          utf8.decode(response.bodyBytes));
+      bool result = jsonData['result'];
+      String description = jsonData['description'];
+      print(result);
+      print(description);
+      return result;
+    } else {
+      print("삭제 중 오류가 발생했습니다 (${response.statusCode})");
+      return false;
+    }
+  }
+
   void refreshData() {
     setState(() {
       _sensorlogFuture = fetchSensorlogData();
@@ -77,7 +100,25 @@ class _DetailPageState extends State<DetailPage> {
           title: Row(
             children: [
               Expanded(
-                child: Text(widget.usersensor!.sensorid),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => DetailUpdatePage(widget.usersensor)),
+                    );
+                  },
+                  child: Text(widget.usersensor!.sensorid),
+                ),
+              ),
+              IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  deleteData(widget.usersensor!.userid, widget.usersensor!.sensorid).then((deleteSuccess) {
+                    if (deleteSuccess) {
+                      _goToMainPage(widget.usersensor!.userid);
+                    }
+                  });
+                }
               ),
               IconButton(
                 icon: Icon(Icons.refresh),
@@ -213,6 +254,13 @@ class _DetailPageState extends State<DetailPage> {
           style: TextStyle(fontSize: 16.0),
         ),
       ),
+    );
+  }
+
+  void _goToMainPage(String userid) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MainPage(userid: userid)),
     );
   }
 }
