@@ -7,6 +7,7 @@ import 'package:team2/config/ApiConfig.dart';
 
 import '../models/User.dart';
 import '../models/Usersensor.dart';
+import '../theme/Colors.dart';
 import 'BottomBar.dart';
 import 'MainPage.dart';
 
@@ -33,7 +34,12 @@ class _DetailUpdatePageState extends State<DetailUpdatePage> {
         }
       });
     } else {
-      print("3글자 이상의 입력이 필요합니다.");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('3글자 이상 입력해주세요'),
+          duration: Duration(seconds: 2),
+        ),
+      );
     }
   }
 
@@ -72,19 +78,46 @@ class _DetailUpdatePageState extends State<DetailUpdatePage> {
             TextField(
               controller: _updateNameController,
               decoration: InputDecoration(
-                labelText: '이름',
-                border: OutlineInputBorder(),
+                filled: true,
+                fillColor: greyStyle1,
+                hintText: '식별할 수 있는 이름을 입력하세요',
+                contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide.none
+                ),
+                prefixStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16),
               ),
+              style: TextStyle(fontSize: 18),
               inputFormatters: [
                 LengthLimitingTextInputFormatter(20),
                 FilteringTextInputFormatter.deny(RegExp(r'\s')),
               ],
-              maxLength: 20,
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 4.0),
+            Text(
+              '3~20 글자로 입력해주세요',
+              style: TextStyle(color: Colors.black),
+            ),
+            SizedBox(height: 12),
             ElevatedButton(
               onPressed: _updateDetails,
-              child: Text('수정하기'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: blueStyle3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text(
+                '수정하기',
+                style: TextStyle(
+                    color: blackStyle1,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20
+                ),
+              ),
             ),
           ],
         ),

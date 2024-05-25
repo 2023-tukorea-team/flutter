@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:team2/theme/Colors.dart';
 
 import '../config/ApiConfig.dart';
 import 'LoginPage.dart';
@@ -109,7 +110,7 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   bool _validateEmail(String email) {
-    RegExp regex = RegExp(r'^[\w-\.]+@[a-zA-Z\d]+\.[a-zA-Z]{2,}$');
+    RegExp regex = RegExp(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$');
     return regex.hasMatch(email);
   }
 
@@ -121,7 +122,9 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: whiteStyle1,
       appBar: AppBar(
+        backgroundColor: whiteStyle1,
         title: Text('회원가입'),
       ),
       body: SingleChildScrollView(
@@ -137,8 +140,19 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: TextField(
                       controller: _idController,
                       decoration: InputDecoration(
-                        labelText: '아이디',
+                        filled: true,
+                        fillColor: greyStyle1,
+                        hintText: '아이디',
+                        contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide.none
+                        ),
+                        prefixStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16),
                       ),
+                      style: TextStyle(fontSize: 18),
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(
                             RegExp(r'[a-zA-Z0-9]')),
@@ -167,11 +181,24 @@ class _SignUpPageState extends State<SignUpPage> {
                         _isIdCheck = true;
                       });
                     },
-                    child: Text('아이디 중복 확인'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: blueStyle4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Text(
+                      '중복 확인',
+                      style: TextStyle(
+                        color: blackStyle1,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 18
+                      )
+                    ),
                   ),
                 ],
               ),
-              SizedBox(height: 8.0),
+              SizedBox(height: 4.0),
               Row(
                 children: [
                   Flexible(
@@ -201,8 +228,19 @@ class _SignUpPageState extends State<SignUpPage> {
               TextField(
                 controller: _passwordController,
                 decoration: InputDecoration(
-                  labelText: '비밀번호',
+                  filled: true,
+                  fillColor: greyStyle1,
+                  hintText: '비밀번호',
+                  contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide.none
+                  ),
+                  prefixStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16),
                 ),
+                style: TextStyle(fontSize: 18),
                 obscureText: true,
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(12),
@@ -221,7 +259,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   });
                 },
               ),
-              SizedBox(height: 8.0),
+              SizedBox(height: 4.0),
               Row(
                 children: [
                   Flexible(
@@ -241,8 +279,19 @@ class _SignUpPageState extends State<SignUpPage> {
               TextField(
                 controller: _passwordCheckController,
                 decoration: InputDecoration(
-                  labelText: '비밀번호 확인',
+                  filled: true,
+                  fillColor: greyStyle1,
+                  hintText: '비밀번호 확인',
+                  contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide.none
+                  ),
+                  prefixStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16),
                 ),
+                style: TextStyle(fontSize: 18),
                 obscureText: true,
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(12),
@@ -260,7 +309,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   });
                 },
               ),
-              SizedBox(height: 8.0),
+              SizedBox(height: 4.0),
               Row(
                 children: [
                   Flexible(
@@ -276,20 +325,44 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ],
               ),
+              SizedBox(height: 12.0),
               TextField(
                 controller: _nameController,
                 decoration: InputDecoration(
-                  labelText: '이름',
+                  filled: true,
+                  fillColor: greyStyle1,
+                  hintText: '이름',
+                  contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide.none
+                  ),
+                  prefixStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16),
                 ),
+                style: TextStyle(fontSize: 18),
               ),
+              SizedBox(height: 20.0),
               Row(
                 children: [
                   Expanded(
                     child: TextField(
                       controller: _emailController,
                       decoration: InputDecoration(
-                        labelText: '이메일',
+                        filled: true,
+                        fillColor: greyStyle1,
+                        hintText: '이메일',
+                        contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide.none
+                        ),
+                        prefixStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16),
                       ),
+                      style: TextStyle(fontSize: 18),
                       onChanged: (value) {
                         // 입력값이 변경될 때마다 제약조건을 확인하여 상태 업데이트
                         setState(() {
@@ -310,11 +383,24 @@ class _SignUpPageState extends State<SignUpPage> {
                         _isEmailCheck = true;
                       });
                     },
-                    child: Text('이메일 중복 확인'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: blueStyle4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Text(
+                      '중복 확인',
+                      style: TextStyle(
+                          color: blackStyle1,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 18
+                      )
+                    ),
                   ),
                 ],
               ),
-              SizedBox(height: 8.0),
+              SizedBox(height: 4.0),
               Row(
                 children: [
                   Flexible(
@@ -340,14 +426,26 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ],
               ),
+              SizedBox(height: 12.0),
               Row(
                 children: [
                   Expanded(
                     child: TextField(
                       controller: _phoneController,
                       decoration: InputDecoration(
-                        labelText: '전화번호',
+                        filled: true,
+                        fillColor: greyStyle1,
+                        hintText: '전화번호',
+                        contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide.none
+                        ),
+                        prefixStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16),
                       ),
+                      style: TextStyle(fontSize: 18),
                       onChanged: (value) {
                         // 입력값이 변경될 때마다 제약조건을 확인하여 상태 업데이트
                         setState(() {
@@ -368,11 +466,24 @@ class _SignUpPageState extends State<SignUpPage> {
                         _isPhoneCheck = true;
                       });
                     },
-                    child: Text('전화번호 중복 확인'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: blueStyle4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Text(
+                        '중복 확인',
+                        style: TextStyle(
+                            color: blackStyle1,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 18
+                        )
+                    ),
                   ),
                 ],
               ),
-              SizedBox(height: 8.0),
+              SizedBox(height: 4.0),
               Row(
                 children: [
                   Flexible(
@@ -429,14 +540,45 @@ class _SignUpPageState extends State<SignUpPage> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text('회원가입 성공'),
-                            content: Text('회원가입이 성공적으로 완료되었습니다.'),
+                            backgroundColor: blueStyle1,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            title: Text(
+                                '회원가입 성공',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 32,
+                                )
+                            ),
+                            content: Text(
+                              '회원가입이 성공적으로 완료되었습니다',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16,
+                              ),
+                            ),
                             actions: [
                               TextButton(
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
-                                child: Text('확인'),
+                                style: ButtonStyle(
+                                  foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                                  backgroundColor: MaterialStateProperty.all<Color>(blueStyle4),
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  '확인',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 20,
+                                  ),
+                                ),
                               ),
                             ],
                           );
@@ -446,13 +588,26 @@ class _SignUpPageState extends State<SignUpPage> {
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('회원가입에 실패했습니다.'),
+                        content: Text('회원가입에 실패했습니다'),
                         duration: Duration(seconds: 2),
                       ),
                     );
                   }
                 },
-                child: Text('회원가입'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: blueStyle3,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: Text(
+                    '회원가입',
+                    style: TextStyle(
+                    color: blackStyle1,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                  ),
+                ),
               ),
             ],
           ),

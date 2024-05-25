@@ -7,11 +7,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:team2/provider/UserProvider.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:team2/theme/Colors.dart';
 
 import '../config/ApiConfig.dart';
 import '../models/User.dart';
 import 'BottomBar.dart';
-import 'MainPage.dart';
 import 'SignupPage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -56,13 +56,46 @@ class _LoginPageState extends State<LoginPage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              content: const Text("권한 설정을 확인해주세요."),
-              actions: [
+              backgroundColor: blueStyle1,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              title: Text(
+                  '권한 설정 필요',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 32,
+                  )
+              ),
+              content: Text(
+                '알림에 대한 권한 설정을 설정해주세요',
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                ),
+              ),
+              actions: <Widget> [
                 TextButton(
-                    onPressed: () {
-                      openAppSettings();
-                    },
-                    child: const Text('설정하기')),
+                  onPressed: () {
+                    openAppSettings();
+                  },
+                  style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                    backgroundColor: MaterialStateProperty.all<Color>(blueStyle4),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                    ),
+                  ),
+                  child: Text(
+                    '확인',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
               ],
             );
           });
@@ -133,14 +166,45 @@ class _LoginPageState extends State<LoginPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('로그인 실패'),
-            content: Text('아이디 또는 비밀번호가 올바르지 않습니다.'),
+            backgroundColor: blueStyle1,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            title: Text(
+              '로그인 실패',
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 32,
+              )
+            ),
+            content: Text(
+              '아이디 또는 비밀번호가 올바르지 않습니다.',
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+              ),
+            ),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('확인'),
+                style: ButtonStyle(
+                  foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                  backgroundColor: MaterialStateProperty.all<Color>(blueStyle4),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                ),
+                child: Text(
+                  '확인',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                  ),
+                ),
               ),
             ],
           );
@@ -166,7 +230,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: whiteStyle1,
       appBar: AppBar(
+        backgroundColor: whiteStyle1,
         title: Text('로그인'),
       ),
       body: Padding(
@@ -178,26 +244,74 @@ class _LoginPageState extends State<LoginPage> {
             TextField(
               controller: _idController,
               decoration: InputDecoration(
-                labelText: '아이디',
+                filled: true,
+                fillColor: greyStyle1,
+                hintText: '아이디를 입력하세요',
+                contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide.none
+                ),
+                prefixStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16),
               ),
+              style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 12.0),
             TextField(
               controller: _passwordController,
               decoration: InputDecoration(
-                labelText: '비밀번호',
+                filled: true,
+                fillColor: greyStyle1,
+                hintText: '비밀번호를 입력하세요',
+                contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide.none
+                ),
+                prefixStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
               ),
               obscureText: true,
+              style: TextStyle(fontSize: 18),
             ),
-            SizedBox(height: 16.0),
+            SizedBox(height: 46.0),
             ElevatedButton(
               onPressed: _login,
-              child: Text('로그인'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: blueStyle3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text(
+                '로그인',
+                style: TextStyle(
+                    color: blackStyle1,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20
+                ),
+              ),
             ),
             SizedBox(height: 8.0),
-            TextButton(
+            ElevatedButton(
               onPressed: _goToSignUpPage,
-              child: Text('회원가입'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: blueStyle3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text(
+                '회원가입',
+                style: TextStyle(
+                  color: blackStyle1,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20
+                ),
+              ),
             ),
           ],
         ),

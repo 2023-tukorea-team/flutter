@@ -2,14 +2,16 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:team2/config/ApiConfig.dart';
 
 import '../models/Sensorlog.dart';
 import '../models/User.dart';
 import '../models/Usersensor.dart';
+import '../theme/Colors.dart';
 import 'BottomBar.dart';
 import 'DetailUpdatePage.dart';
-import 'MainPage.dart';
+import 'LogPage.dart';
 
 class DetailPage extends StatefulWidget {
   final Usersensor usersensor;
@@ -99,7 +101,9 @@ class _DetailPageState extends State<DetailPage> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: whiteStyle1,
         appBar: AppBar(
+          backgroundColor: whiteStyle1,
           title: Row(
             children: [
               Expanded(
@@ -110,7 +114,14 @@ class _DetailPageState extends State<DetailPage> {
                       MaterialPageRoute(builder: (context) => DetailUpdatePage(widget.usersensor, widget.user)),
                     );
                   },
-                  child: Text(widget.usersensor!.name),
+                  child: Text(
+                    widget.usersensor!.name,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
               ),
               IconButton(
@@ -132,6 +143,16 @@ class _DetailPageState extends State<DetailPage> {
             ],
           ),
           bottom: TabBar(
+            indicator: BoxDecoration(),
+            labelColor: blueStyle3,
+            unselectedLabelColor: Colors.black,
+            labelStyle: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+            unselectedLabelStyle: TextStyle(
+              fontWeight: FontWeight.w400,
+            ),
             tabs: [
               Tab(text: '알림 기록'),
               Tab(text: '로그 기록'),
@@ -166,17 +187,22 @@ class _DetailPageState extends State<DetailPage> {
             itemBuilder: (context, index) {
               final sensorlog = filteredLogs[index];
               return Card(
+                color: blueStyle4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  side: BorderSide(color: Colors.blueGrey, width: 1),
+                ),
                 child: ListTile(
-                  title: Text('${sensorlog.logtime}'),
-                  subtitle: Row(
-                    children: [
-                      _buildSensorStatus('시동 ', sensorlog.start),
-                      _buildSensorStatus('문잠금 ', sensorlog.door),
-                      _buildSensorStatus('사람 ', sensorlog.person),
-                      Text('속도:${sensorlog.speed} '),
-                      _buildSensorStatusWarning('경고 ', sensorlog.warning),
-                    ],
+                  title: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 1),
+                    child: Text(
+                      '${formatDateTime(sensorlog.logtime)}',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                    ),
                   ),
+                  onTap: () {
+                    _goToLogPage(sensorlog);
+                  },
                 ),
               );
             },
@@ -205,17 +231,22 @@ class _DetailPageState extends State<DetailPage> {
             itemBuilder: (context, index) {
               final sensorlog = snapshot.data![index];
               return Card(
+                color: blueStyle4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  side: BorderSide(color: Colors.blueGrey, width: 1),
+                ),
                 child: ListTile(
-                  title: Text('${sensorlog.logtime}'),
-                  subtitle: Row(
-                    children: [
-                      _buildSensorStatus('시동 ', sensorlog.start),
-                      _buildSensorStatus('문잠금 ', sensorlog.door),
-                      _buildSensorStatus('사람 ', sensorlog.person),
-                      Text('속도:${sensorlog.speed} '),
-                      _buildSensorStatusWarning('경고 ', sensorlog.warning),
-                    ],
+                  title: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 1),
+                    child: Text(
+                      '${formatDateTime(sensorlog.logtime)}',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400,),
+                    ),
                   ),
+                  onTap: () {
+                    _goToLogPage(sensorlog);
+                  },
                 ),
               );
             },
@@ -254,7 +285,7 @@ class _DetailPageState extends State<DetailPage> {
         padding: EdgeInsets.all(16.0),
         child: Text(
           '저장된 기록이 없습니다',
-          style: TextStyle(fontSize: 16.0),
+          style: TextStyle(fontSize: 20.0),
         ),
       ),
     );
@@ -265,5 +296,17 @@ class _DetailPageState extends State<DetailPage> {
       context,
       MaterialPageRoute(builder: (context) => BottomBar(user: user)),
     );
+  }
+
+  void _goToLogPage(Sensorlog sensorlog) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LogPage(sensorlog: sensorlog)),
+    );
+  }
+
+  String formatDateTime(DateTime dateTime) {
+    final DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+    return formatter.format(dateTime);
   }
 }

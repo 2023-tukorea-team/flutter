@@ -17,6 +17,7 @@ import 'package:http/http.dart' as http;
 import 'package:team2/page/ChangePwPage.dart';
 
 import '../models/User.dart';
+import '../theme/Colors.dart';
 import 'AddSensorPage.dart';
 import '../config/ApiConfig.dart';
 import 'DetailPage.dart';
@@ -83,45 +84,93 @@ class _UserPageState extends State<UserPage> {
       appBar: AppBar(
         title: Text('내 정보'),
       ),
-      body: WillPopScope(
-        onWillPop: () async {
-          DateTime now = DateTime.now();
-          if (lastBackPressedTime == null || now.difference(lastBackPressedTime!) > Duration(seconds: 3)) {
-            lastBackPressedTime = now;
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('한 번 더 누르면 종료됩니다.'),
-                duration: Duration(seconds: 2),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+                side: BorderSide(color: Colors.blueGrey, width: 1),
               ),
-            );
-            return false; // 뒤로가기 버튼을 무시하고 스낵바 표시
-          }
-          SystemNavigator.pop();
-          return true; // 2번째 뒤로가기 버튼을 누르면 앱 종료
-        },
-        child: ListView(
-          children: <Widget>[
-            ListTile(
-              title: Text('비밀번호 변경'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ChangePwPage(user: widget.user),
-                  ),
-                );
+              color: blueStyle4,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ListTile(
+                      title: Text(
+                        ' - 아이디 : ${widget.user.id}',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      title: Text(
+                        ' - 이름 : ${widget.user.name}',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      title: Text(
+                        ' - 이메일 ${widget.user.email}',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      title: Text(
+                        ' - 전화번호 ${widget.user.phone}',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: WillPopScope(
+              onWillPop: () async {
+                DateTime now = DateTime.now();
+                if (lastBackPressedTime == null || now.difference(lastBackPressedTime!) > Duration(seconds: 3)) {
+                  lastBackPressedTime = now;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('한 번 더 누르면 종료됩니다.'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                  return false;
+                }
+                SystemNavigator.pop();
+                return true;
               },
+              child: ListView(
+                children: <Widget>[
+                  ListTile(
+                    title: Text('비밀번호 변경'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChangePwPage(user: widget.user),
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    title: Text('로그아웃'),
+                    onTap: _logout,
+                  ),
+                  ListTile(
+                    title: Text('회원 탈퇴'),
+                    onTap: _showConfirmationDialog,
+                  ),
+                ],
+              ),
             ),
-            ListTile(
-              title: Text('로그아웃'),
-              onTap: _logout,
-            ),
-            ListTile(
-              title: Text('회원 탈퇴'),
-              onTap: _withdraw,
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -142,18 +191,92 @@ class _UserPageState extends State<UserPage> {
   }
 
   void _withdraw() async {
+    print("withdraw2");
     bool iswithdraw = await withdraw(widget.user.id);
-    print(iswithdraw);
     if (iswithdraw) {
-      _showSuccessDialog("회원탈퇴 성공", "그동안 앱을 이용해주셔서 감사합니다");
+      _showSuccessDialog("회원 탈퇴 성공", "그동안 앱을 이용해 주셔서 감사합니다");
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('회원탈퇴에 실패했습니다.'),
+          content: Text('회원탈퇴에 실패했습니다'),
           duration: Duration(seconds: 2),
         ),
       );
     }
+  }
+
+  void _showConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: blueStyle1,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          title: Text(
+              '회원 탈퇴',
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 32,
+              )
+          ),
+          content: Text(
+            '정말로 회원 탈퇴하겠습니까?',
+            style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 16,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                _withdraw();
+                print("withdraw1");
+                Navigator.of(context).pop();
+              },
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                backgroundColor: MaterialStateProperty.all<Color>(blueStyle4),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
+              ),
+              child: Text(
+                '네',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.redAccent),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
+              ),
+              child: Text(
+                '아니요',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _showSuccessDialog(String title, String content) {
@@ -161,8 +284,24 @@ class _UserPageState extends State<UserPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(title),
-          content: Text(content),
+          backgroundColor: blueStyle1,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          title: Text(
+              title,
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 32,
+              )
+          ),
+          content: Text(
+            content,
+            style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 16,
+            ),
+          ),
           actions: [
             TextButton(
               onPressed: () {
@@ -173,7 +312,22 @@ class _UserPageState extends State<UserPage> {
                       (Route<dynamic> route) => false,
                 );
               },
-              child: Text("확인"),
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                backgroundColor: MaterialStateProperty.all<Color>(blueStyle4),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
+              ),
+              child: Text(
+                '확인',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20,
+                ),
+              ),
             ),
           ],
         );

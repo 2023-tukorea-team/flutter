@@ -7,6 +7,7 @@ import 'package:team2/page/DetailUpdatePage.dart';
 
 import '../config/ApiConfig.dart';
 import '../models/User.dart';
+import '../theme/Colors.dart';
 import 'BottomBar.dart';
 import 'LoginPage.dart';
 import 'MainPage.dart';
@@ -29,11 +30,61 @@ class _ChangePwPageState extends State<ChangePwPage> {
     if (updatedText.length >= 6) {
       _ChangePwCheck(widget.user.id, updatedText).then((updateSuccess) {
         if (updateSuccess) {
-          _goToMainPage(widget.user.id);
+          showDialog(
+            context: context, builder: (BuildContext) {
+            return AlertDialog(
+              backgroundColor: blueStyle1,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              title: Text(
+                  '비밀번호 변경 성공',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 32,
+                  )
+              ),
+              content: Text(
+                '비밀번호가 성공적으로 변경되었습니다',
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    _goToMainPage(widget.user.id);
+                  },
+                  style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                    backgroundColor: MaterialStateProperty.all<Color>(blueStyle4),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                    ),
+                  ),
+                  child: Text(
+                    '확인',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          });
         }
       });
     } else {
-      print("6글자 이상의 입력이 필요합니다.");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('6글자 이상 입력해주세요'),
+          duration: Duration(seconds: 2),
+        ),
+      );
     }
   }
 
@@ -72,21 +123,48 @@ class _ChangePwPageState extends State<ChangePwPage> {
             TextField(
               controller: _ChangePwController,
               decoration: InputDecoration(
-                labelText: '비밀번호',
-                border: OutlineInputBorder(),
+                filled: true,
+                fillColor: greyStyle1,
+                hintText: '변경할 비밀번호를 입력하세요',
+                contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide.none
+                ),
+                prefixStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16),
               ),
+              style: TextStyle(fontSize: 18),
               obscureText: true,
               inputFormatters: [
                 LengthLimitingTextInputFormatter(12),
                 FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
                 FilteringTextInputFormatter.deny(RegExp(r'\s')),
               ],
-              maxLength: 12,
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 4.0),
+            Text(
+              '6~12 글자로 입력해주세요',
+              style: TextStyle(color: Colors.black),
+            ),
+            SizedBox(height: 12),
             ElevatedButton(
               onPressed: _changePw,
-              child: Text('비밀번호 변경'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: blueStyle3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text(
+                '비밀번호 변경',
+                style: TextStyle(
+                    color: blackStyle1,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20
+                ),
+              ),
             ),
           ],
         ),
@@ -100,4 +178,6 @@ class _ChangePwPageState extends State<ChangePwPage> {
       MaterialPageRoute(builder: (context) => BottomBar(user: widget.user)),
     );
   }
+
+
 }

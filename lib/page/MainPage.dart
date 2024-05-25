@@ -4,8 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 import '../models/User.dart';
+import '../theme/Colors.dart';
 import 'AddSensorPage.dart';
 import '../config/ApiConfig.dart';
 import 'DetailPage.dart';
@@ -88,8 +90,10 @@ class _MainPageState extends State<MainPage> {
         return true;
       },
       child: Scaffold(
+        backgroundColor: whiteStyle1,
         appBar: AppBar(
-          title: Text('연결된 기기'),
+          backgroundColor: whiteStyle1,
+          title: Text('내 기기'),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.add),
@@ -114,7 +118,15 @@ class _MainPageState extends State<MainPage> {
 
   Widget _buildUserSensorList() {
     if (_usersensorData.isEmpty) {
-      return Center(child: Text("등록된 기기가 없습니다!."));
+      return Center(
+        child: Text(
+          "기기를 등록해주세요",
+          style: TextStyle(
+            fontSize: 24,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      );
     } else {
       return ListView.builder(
         itemCount: _usersensorData.length,
@@ -128,38 +140,45 @@ class _MainPageState extends State<MainPage> {
               );
             },
             child: Card(
-              color: usersensor.state == 1 ? Color(0xFFFFCDD2) : null,
-              margin: EdgeInsets.all(8.0),
+              color: blueStyle4,
+              margin: EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0, bottom: 4.0),
+              shape: RoundedRectangleBorder(
+                side: BorderSide(color: Colors.blueGrey, width: 1),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
                   children: [
-                    Row(
-                      children: [
-                        Icon(
-                          usersensor.state == 1 ? Icons.warning : Icons.panorama_fish_eye,
-                          color: usersensor.state == 1 ? Colors.red : Colors.blueGrey,
-                          size: 24,
-                        ),
-                        SizedBox(width: 8),
-                        Text(
-                          '이름 : ${usersensor.name}',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blueGrey,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: 4.0),
+                            child: Text(
+                              '${usersensor.name}',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: blackStyle1,
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: EdgeInsets.only(left: 4.0),
+                            child: Text(
+                              '최종 접속 시간: ${formatDateTime(usersensor.codetime)}',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          '마지막 접속 시간: ${usersensor.codetime}',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ],
+                    Icon(
+                      usersensor.state == 1 ? Icons.warning : null,
+                      color: usersensor.state == 1 ? Colors.red : null,
+                      size: 32,
                     ),
                   ],
                 ),
@@ -176,5 +195,10 @@ class _MainPageState extends State<MainPage> {
       context,
       MaterialPageRoute(builder: (context) => AddSensorPage(user: user)),
     );
+  }
+
+  String formatDateTime(DateTime dateTime) {
+    final DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+    return formatter.format(dateTime);
   }
 }

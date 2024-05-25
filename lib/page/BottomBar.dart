@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:team2/page/SignupPage.dart';
 
 import '../models/User.dart';
+import '../theme/Colors.dart';
 import 'MainPage.dart';
 import 'UserPage.dart';
 
@@ -37,22 +38,26 @@ class _BottomBarState extends State<BottomBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: whiteStyle1,
       body: SafeArea(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home, size:32),
             label: '홈',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.text_snippet),
+            icon: Icon(Icons.text_snippet, size: 32),
             label: '마이 페이지',
           ),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
+        selectedItemColor: blueStyle3,
+        selectedLabelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+        unselectedLabelStyle: TextStyle(fontSize: 14),
       ),
     );
   }

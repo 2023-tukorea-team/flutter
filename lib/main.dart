@@ -48,11 +48,25 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '로그인',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        textTheme: TextTheme(
+          bodyText1: TextStyle(
+            fontFamily: "Pretendard",
+            fontWeight: FontWeight.w400,
+          ),
+          button: TextStyle(
+            fontFamily: "Pretendard",
+            fontWeight: FontWeight.w400,
+          ),
+          headline6: TextStyle(
+            fontFamily: "Pretendard",
+            fontWeight: FontWeight.w400,
+          )
+        ),
+        fontFamily: "Pretendard",
       ),
-      home: LoginPage(), //// LoginPage()로 나중에 바꾸기
+      home: LoginPage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

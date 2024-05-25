@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:team2/config/ApiConfig.dart';
 
 import '../models/User.dart';
+import '../theme/Colors.dart';
 import 'BottomBar.dart';
 import 'MainPage.dart';
 
@@ -108,7 +109,9 @@ class _AddSensorPageState extends State<AddSensorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: whiteStyle1,
       appBar: AppBar(
+        backgroundColor: whiteStyle1,
         title: Text('기기 연결'),
       ),
       body: SingleChildScrollView(
@@ -124,8 +127,19 @@ class _AddSensorPageState extends State<AddSensorPage> {
                     child: TextField(
                       controller: _macAddressController,
                       decoration: InputDecoration(
-                        labelText: '맥주소',
+                        filled: true,
+                        fillColor: greyStyle1,
+                        hintText: '맥주소를 입력하세요',
+                        contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide.none
+                        ),
+                        prefixStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
                       ),
+                      style: TextStyle(fontSize: 18),
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(
                             RegExp(r'[a-f0-9:]')),
@@ -165,12 +179,25 @@ class _AddSensorPageState extends State<AddSensorPage> {
                         );
                       }
                     }
-                        : null, // _isMacForm이 false인 경우에는 onPressed를 null로 설정하여 버튼이 비활성화됩니다.
-                    child: Text('인증번호 전송'),
+                        : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: blueStyle4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Text(
+                        '인증번호 전송',
+                        style: TextStyle(
+                            color: blackStyle1,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 18
+                        )
+                    ),
                   ),
                 ],
               ),
-              SizedBox(height: 8.0),
+              SizedBox(height: 4.0),
               Row(
                 children: [
                   Flexible(
@@ -180,7 +207,7 @@ class _AddSensorPageState extends State<AddSensorPage> {
                       style: TextStyle(color: Colors.green),
                     )
                         : Text(
-                      '입력 예시 : aa:aa:aa:aa:aa:aa',
+                      '다음과 같은 형식으로 입력해주세요\n예) d8:3a:dd:20:b2:d5',
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
@@ -194,16 +221,23 @@ class _AddSensorPageState extends State<AddSensorPage> {
                       child: TextField(
                         controller: _verificationController,
                         decoration: InputDecoration(
-                          labelText: '인증번호',
+                          filled: true,
+                          fillColor: greyStyle1,
+                          hintText: '인증번호를 입력하세요',
+                          contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide.none
+                          ),
+                          prefixStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
                         ),
+                        style: TextStyle(fontSize: 18),
                         inputFormatters: [
-                          FilteringTextInputFormatter.allow(
-                              RegExp(r'[0-9]')),
-                          // 숫자만 허용
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                           LengthLimitingTextInputFormatter(6),
-                          // 최대 길이 설정
                           FilteringTextInputFormatter.deny(RegExp(r'\s')),
-                          // 공백 입력 방지
                         ],
                       ),
                     ),
@@ -221,16 +255,46 @@ class _AddSensorPageState extends State<AddSensorPage> {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  title: Text("성공"),
-                                  content: Text("기기 연결에 성공했습니다"),
-                                  actions: [
+                                  backgroundColor: blueStyle1,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  title: Text(
+                                      '성공',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 32,
+                                      )
+                                  ),
+                                  content: Text(
+                                    '기기 연결에 성공했습니다',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  actions: <Widget> [
                                     TextButton(
                                       onPressed: () {
-                                        Navigator.of(context).pop(); // 다이얼로그 닫기
-                                        _goToMainPage(
-                                            widget.user); // 메인 페이지로 이동
+                                        Navigator.of(context).pop();
+                                        _goToMainPage(widget.user);
                                       },
-                                      child: Text("확인"),
+                                      style: ButtonStyle(
+                                        foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                                        backgroundColor: MaterialStateProperty.all<Color>(blueStyle4),
+                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5.0),
+                                          ),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        '확인',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 20,
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 );
@@ -265,7 +329,20 @@ class _AddSensorPageState extends State<AddSensorPage> {
                             break;
                         }
                       },
-                      child: Text('인증번호 입력'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: blueStyle4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: Text(
+                          '인증번호 입력',
+                          style: TextStyle(
+                              color: blackStyle1,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 18
+                          )
+                      ),
                     ),
                   ],
                 ),
