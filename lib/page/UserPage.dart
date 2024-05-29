@@ -113,13 +113,13 @@ class _UserPageState extends State<UserPage> {
                     ),
                     ListTile(
                       title: Text(
-                        ' - 이메일 ${widget.user.email}',
+                        ' - 이메일 : ${widget.user.email}',
                         style: TextStyle(fontSize: 18),
                       ),
                     ),
                     ListTile(
                       title: Text(
-                        ' - 전화번호 ${widget.user.phone}',
+                        ' - 전화번호 : ${widget.user.phone}',
                         style: TextStyle(fontSize: 18),
                       ),
                     ),

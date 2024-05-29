@@ -10,6 +10,7 @@ import '../models/User.dart';
 import '../theme/Colors.dart';
 import 'AddSensorPage.dart';
 import '../config/ApiConfig.dart';
+import 'DetailListPage.dart';
 import 'DetailPage.dart';
 import '../models/Usersensor.dart';
 
@@ -136,7 +137,7 @@ class _MainPageState extends State<MainPage> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => DetailPage(usersensor: usersensor, user: widget.user)),
+                MaterialPageRoute(builder: (context) => DetailListPage(usersensor: usersensor, user: widget.user)),
               );
             },
             child: Card(
@@ -168,7 +169,7 @@ class _MainPageState extends State<MainPage> {
                           Padding(
                             padding: EdgeInsets.only(left: 4.0),
                             child: Text(
-                              '최종 접속 시간: ${formatDateTime(usersensor.codetime)}',
+                              '연결한 시간: ${formatDateTime(usersensor.codetime)}',
                               style: TextStyle(fontSize: 14),
                             ),
                           ),

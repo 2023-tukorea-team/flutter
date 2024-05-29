@@ -108,12 +108,6 @@ class _DetailPageState extends State<DetailPage> {
             children: [
               Expanded(
                 child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => DetailUpdatePage(widget.usersensor, widget.user)),
-                    );
-                  },
                   child: Text(
                     widget.usersensor!.name,
                     style: TextStyle(

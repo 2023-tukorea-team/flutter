@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:team2/provider/UserProvider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import 'config/NaverMapConfig.dart';
 import 'config/firebase_options.dart';
 import 'page/LoginPage.dart';
 
@@ -34,6 +36,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   initializeNotification();
+  await NaverMapSdk.instance.initialize(clientId: NaverMapConfig.ClientID);
   runApp(
     MultiProvider(
       providers: [
