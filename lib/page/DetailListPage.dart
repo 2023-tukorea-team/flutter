@@ -64,7 +64,9 @@ class _DetailListPageState extends State<DetailListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: whiteStyle1,
       appBar: AppBar(
+        backgroundColor: whiteStyle1,
         title: Text(widget.usersensor.name),
       ),
       body: Padding(

@@ -81,7 +81,9 @@ class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: whiteStyle1,
       appBar: AppBar(
+        backgroundColor: whiteStyle1,
         title: Text('내 정보'),
       ),
       body: Column(

@@ -67,8 +67,10 @@ class _DetailUpdatePageState extends State<DetailUpdatePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: whiteStyle1,
       appBar: AppBar(
-        title: Text(widget.usersensor!.sensorid),
+        backgroundColor: whiteStyle1,
+        title: Text(widget.usersensor.sensorid),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),

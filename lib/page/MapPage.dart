@@ -85,7 +85,9 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: whiteStyle1,
       appBar: AppBar(
+        backgroundColor: whiteStyle1,
         title: Text('현재 위치 조회'),
       ),
       body: Column(

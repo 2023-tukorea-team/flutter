@@ -11,7 +11,6 @@ import '../theme/Colors.dart';
 import 'AddSensorPage.dart';
 import '../config/ApiConfig.dart';
 import 'DetailListPage.dart';
-import 'DetailPage.dart';
 import '../models/Usersensor.dart';
 
 class MainPage extends StatefulWidget {

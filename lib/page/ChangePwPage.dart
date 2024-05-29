@@ -112,7 +112,9 @@ class _ChangePwPageState extends State<ChangePwPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: whiteStyle1,
       appBar: AppBar(
+        backgroundColor: whiteStyle1,
         title: Text('비밀번호 변경'),
       ),
       body: Padding(
