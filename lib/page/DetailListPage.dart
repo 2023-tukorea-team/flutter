@@ -8,6 +8,7 @@ import 'package:team2/theme/Colors.dart';
 import '../models/Sensorlog.dart';
 import '../models/User.dart';
 import '../models/Usersensor.dart';
+import 'ChartPage.dart';
 import 'DetailPage.dart';
 import 'DetailUpdatePage.dart';
 import 'MapPage.dart';
@@ -121,6 +122,12 @@ class _DetailListPageState extends State<DetailListPage> {
             ),
             ListTile(
               title: Text('그래프 조회'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ChartPage(usersensor: widget.usersensor, user: widget.user)),
+                );
+              },
             ),
           ],
         ),
