@@ -33,6 +33,7 @@ migrate_working_dir/
 firebase_options.dart
 ApiConfig.dart
 NaverMapConfig.dart
+.png
 
 # Symbolication related
 app.*.symbols

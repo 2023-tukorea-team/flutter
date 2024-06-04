@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:team2/config/ApiConfig.dart';
@@ -31,11 +32,21 @@ class _DetailListPageState extends State<DetailListPage> {
   bool startState = false;
   bool personState = false;
   int speedState = 0;
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
     fetchSensorlogData();
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      fetchSensorlogData();
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   Future<void> fetchSensorlogData() async {

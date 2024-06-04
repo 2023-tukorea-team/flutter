@@ -56,7 +56,7 @@ class _ChartPageState extends State<ChartPage> {
   void initState() {
     super.initState();
     getSensorData(widget.usersensor.sensorid);
-    timer = Timer.periodic(Duration(seconds: 100), (Timer t) {
+    timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
       getSensorData(widget.usersensor.sensorid);
     });
   }
@@ -118,13 +118,13 @@ class _ChartPageState extends State<ChartPage> {
                           isVisible: false,
                           interval: 1,
                           minimum: 1,
-                          maximum: 64,
+                          maximum: 100,
                         ),
                         primaryYAxis: NumericAxis(
                           isVisible: false,
                           labelFormat: '',
                           minimum: 0,
-                          maximum: 1000,
+                          maximum: 20,
                           interval: 1,
                         ),
                         series: <LineSeries<_ChartData, int>>[
@@ -175,13 +175,13 @@ class _ChartPageState extends State<ChartPage> {
                           isVisible: false,
                           interval: 1,
                           minimum: 1,
-                          maximum: 64,
+                          maximum: 100,
                         ),
                         primaryYAxis: NumericAxis(
                           isVisible: false,
                           labelFormat: '',
                           minimum: 0,
-                          maximum: 1000,
+                          maximum: 20,
                           interval: 1,
                         ),
                         series: <LineSeries<_ChartData, int>>[
