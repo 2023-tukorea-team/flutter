@@ -28,6 +28,8 @@ class _ChartPageState extends State<ChartPage> {
   String rightString = '';
   Timer? timer;
   bool showFirstData = true;
+  double leftMax = 10;
+  double rightMax = 10;
 
   Future<bool> getSensorData(String id) async {
     final response = await http.post(
@@ -79,9 +81,7 @@ class _ChartPageState extends State<ChartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteStyle1,
       appBar: AppBar(
-        backgroundColor: whiteStyle1,
         title: Text('실시간 그래프'),
       ),
       body: Column(
@@ -99,33 +99,31 @@ class _ChartPageState extends State<ChartPage> {
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                        color: blueStyle3,
+                        //color: greyStyle1,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       padding: EdgeInsets.all(8),
                       child: Text(
                         "왼쪽 센서 그래프",
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 24,
                           fontWeight: FontWeight.w600,
+                          color: blueStyle5,
                         ),
                       ),
                     ),
                     Expanded(
                       child: SfCartesianChart(
-                        plotAreaBackgroundColor: blueStyle4,
+                        plotAreaBackgroundColor: whiteStyle3,
                         primaryXAxis: NumericAxis(
                           isVisible: false,
-                          interval: 1,
-                          minimum: 1,
-                          maximum: 100,
+                          minimum: -2,
+                          maximum: 103,
                         ),
                         primaryYAxis: NumericAxis(
                           isVisible: false,
                           labelFormat: '',
-                          minimum: 0,
-                          maximum: 20,
-                          interval: 1,
+                          minimum: -0.5,
                         ),
                         series: <LineSeries<_ChartData, int>>[
                           LineSeries<_ChartData, int>(
@@ -156,33 +154,31 @@ class _ChartPageState extends State<ChartPage> {
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                        color: blueStyle3,
+                        //color: greyStyle1,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       padding: EdgeInsets.all(8),
                       child: Text(
                         "오른쪽 센서 그래프",
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 24,
                           fontWeight: FontWeight.w600,
+                          color: blueStyle5,
                         ),
                       ),
                     ),
                     Expanded(
                       child: SfCartesianChart(
-                        plotAreaBackgroundColor: blueStyle4,
+                        plotAreaBackgroundColor: whiteStyle3,
                         primaryXAxis: NumericAxis(
                           isVisible: false,
-                          interval: 1,
-                          minimum: 1,
-                          maximum: 100,
+                          minimum: -2,
+                          maximum: 103,
                         ),
                         primaryYAxis: NumericAxis(
                           isVisible: false,
                           labelFormat: '',
-                          minimum: 0,
-                          maximum: 20,
-                          interval: 1,
+                          minimum: -0.5,
                         ),
                         series: <LineSeries<_ChartData, int>>[
                           LineSeries<_ChartData, int>(

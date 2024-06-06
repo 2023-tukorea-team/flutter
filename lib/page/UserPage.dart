@@ -14,14 +14,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:team2/page/ChangePwPage.dart';
 
 import '../models/User.dart';
 import '../theme/Colors.dart';
-import 'AddSensorPage.dart';
 import '../config/ApiConfig.dart';
-import 'DetailPage.dart';
-import '../models/Usersensor.dart';
+import 'ChangePwPage.dart';
 import 'LoginPage.dart';
 
 class UserPage extends StatefulWidget {
@@ -80,101 +77,161 @@ class _UserPageState extends State<UserPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: whiteStyle1,
-      appBar: AppBar(
-        backgroundColor: whiteStyle1,
-        title: Text('내 정보'),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-                side: BorderSide(color: Colors.blueGrey, width: 1),
-              ),
-              color: blueStyle4,
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ListTile(
-                      title: Text(
-                        ' - 아이디 : ${widget.user.id}',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    ListTile(
-                      title: Text(
-                        ' - 이름 : ${widget.user.name}',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    ListTile(
-                      title: Text(
-                        ' - 이메일 : ${widget.user.email}',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    ListTile(
-                      title: Text(
-                        ' - 전화번호 : ${widget.user.phone}',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                  ],
+    return WillPopScope(
+      onWillPop: () async {
+        DateTime now = DateTime.now();
+        if (lastBackPressedTime == null || now.difference(lastBackPressedTime!) > Duration(seconds: 3)) {
+          lastBackPressedTime = now;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('한 번 더 누르면 종료됩니다.'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+          return false;
+        }
+        Navigator.pop(context);
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("마이 페이지"),
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  " 내 정보",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.0,
+                  ),
                 ),
-              ),
+                SizedBox(height: 8.0),
+                Container(
+                  padding: EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    color: whiteStyle2,
+                    border: Border.all(color: Colors.grey, width: 1.0),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "${widget.user.name}",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 28.0,
+                                  ),
+                                ),
+                                SizedBox(height: 8.0),
+                                Text(
+                                  "${widget.user.email}",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                                SizedBox(height: 8.0),
+                                Text(
+                                  formatPhoneNumber("${widget.user.phone}"),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(height: 24.0),
+                Text(
+                  " 계정 관리",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.0,
+                  ),
+                ),
+                SizedBox(height: 8.0),
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    side: BorderSide(color: Colors.grey, width: 1.0),
+                  ),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        leading: Icon(Icons.vpn_key),
+                        tileColor: whiteStyle2,
+                        title: Text('비밀번호 변경'),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChangePwPage(user: widget.user),
+                            ),
+                          );
+                        },
+                      ),
+                      _buildDivider(),
+                      ListTile(
+                        leading: Icon(Icons.logout),
+                        tileColor: whiteStyle2,
+                        title: Text('로그아웃'),
+                        onTap: _logout,
+                      ),
+                      _buildDivider(),
+                      ListTile(
+                        leading: Icon(Icons.delete),
+                        tileColor: whiteStyle2,
+                        title: Text('회원 탈퇴'),
+                        onTap: _showConfirmationDialog,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
-          Expanded(
-            child: WillPopScope(
-              onWillPop: () async {
-                DateTime now = DateTime.now();
-                if (lastBackPressedTime == null || now.difference(lastBackPressedTime!) > Duration(seconds: 3)) {
-                  lastBackPressedTime = now;
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('한 번 더 누르면 종료됩니다.'),
-                      duration: Duration(seconds: 2),
-                    ),
-                  );
-                  return false;
-                }
-                SystemNavigator.pop();
-                return true;
-              },
-              child: ListView(
-                children: <Widget>[
-                  ListTile(
-                    title: Text('비밀번호 변경'),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ChangePwPage(user: widget.user),
-                        ),
-                      );
-                    },
-                  ),
-                  ListTile(
-                    title: Text('로그아웃'),
-                    onTap: _logout,
-                  ),
-                  ListTile(
-                    title: Text('회원 탈퇴'),
-                    onTap: _showConfirmationDialog,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
+  }
+
+  Widget _buildDivider() {
+    return Container(
+      height: 1,
+      width: MediaQuery.of(context).size.width * 0.85,
+      child: Divider(
+        color: whiteStyle3,
+        thickness: 1,
+        height: 0,
+      ),
+    );
+  }
+
+  String formatPhoneNumber(String phone) {
+    String formatted = phone.replaceAll(RegExp(r'[^\d]'), '');
+    if (formatted.length == 11) {
+      return '${formatted.substring(0, 3)}-${formatted.substring(3, 7)}-${formatted.substring(7)}';
+    } else {
+      return phone;
+    }
   }
 
   void _logout() async {

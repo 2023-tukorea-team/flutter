@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -25,11 +26,21 @@ class _MainPageState extends State<MainPage> {
   List<Usersensor> _usersensorData = [];
   String url = ApiConfig.baseUrl;
   DateTime? lastBackPressedTime;
+  Timer? timer;
 
   @override
   void initState() {
     super.initState();
     fetchUsersensorData();
+    timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
+      fetchUsersensorData();
+    });
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 
   Future<void> fetchUsersensorData() async {
@@ -90,26 +101,13 @@ class _MainPageState extends State<MainPage> {
         return true;
       },
       child: Scaffold(
-        backgroundColor: whiteStyle1,
         appBar: AppBar(
-          backgroundColor: whiteStyle1,
-          title: Text('내 기기'),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                _goToAddSensorPage(widget.user);
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.refresh),
-              onPressed: () {
-                setState(() {
-                  fetchUsersensorData();
-                });
-              },
-            )
-          ],
+          centerTitle: true,
+          title: Text('나의 기기'),
+          leading: IconButton(
+            icon: Icon(null),
+            onPressed: () {},
+          ),
         ),
         body: _buildUserSensorList(),
       )
@@ -117,77 +115,107 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget _buildUserSensorList() {
-    if (_usersensorData.isEmpty) {
-      return Center(
-        child: Text(
-          "기기를 등록해주세요",
-          style: TextStyle(
-            fontSize: 24,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      );
-    } else {
-      return ListView.builder(
-        itemCount: _usersensorData.length,
-        itemBuilder: (context, index) {
-          var usersensor = _usersensorData[index];
-          return InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => DetailListPage(usersensor: usersensor, user: widget.user)),
-              );
-            },
-            child: Card(
-              color: blueStyle4,
-              margin: EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0, bottom: 4.0),
-              shape: RoundedRectangleBorder(
-                side: BorderSide(color: Colors.blueGrey, width: 1),
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+        child: Column(
+          children: [
+            SizedBox(height: 12.0),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: _usersensorData.length,
+              itemBuilder: (context, index) {
+                var usersensor = _usersensorData[index];
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => DetailListPage(usersensor: usersensor, user: widget.user)),
+                    );
+                  },
+                  child: Card(
+                    color: whiteStyle2,
+                    margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      side: BorderSide(color: Colors.grey, width: 1.0),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Row(
                         children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 4.0),
-                            child: Text(
-                              '${usersensor.name}',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: blackStyle1,
-                              ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 4.0),
+                                  child: Text(
+                                    '${usersensor.name}',
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                      color: blackStyle1,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 4.0),
+                                  child: Text(
+                                    '연결 시간: ${formatDateTime(usersensor.codetime)}',
+                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: blackStyle1,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 4.0),
-                            child: Text(
-                              '연결한 시간: ${formatDateTime(usersensor.codetime)}',
-                              style: TextStyle(fontSize: 14),
-                            ),
+                          Icon(
+                            usersensor.state == 1 ? Icons.warning : null,
+                            color: usersensor.state == 1 ? Colors.red : null,
+                            size: 32,
                           ),
                         ],
                       ),
                     ),
-                    Icon(
-                      usersensor.state == 1 ? Icons.warning : null,
-                      color: usersensor.state == 1 ? Colors.red : null,
-                      size: 32,
+                  ),
+                );
+              },
+            ),
+            SizedBox(height: 40.0),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _goToAddSensorPage(widget.user);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: blueStyle5,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Text(
+                        '기기 추가하기',
+                        style: TextStyle(
+                          color: whiteStyle2,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20,
+                        ),
+                      ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          );
-        },
-      );
-    }
+          ],
+        ),
+      ),
+    );
   }
 
   void _goToAddSensorPage(User user) {

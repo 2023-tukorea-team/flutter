@@ -67,13 +67,20 @@ class _DetailUpdatePageState extends State<DetailUpdatePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteStyle1,
       appBar: AppBar(
-        backgroundColor: whiteStyle1,
-        title: Text(widget.usersensor.sensorid),
+        centerTitle: true,
+        title : Text(
+          '기기 이름 변경',
+          style: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.w600,
+            color: whiteStyle2,
+          ),
+        ),
+        toolbarHeight: 80,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -81,8 +88,8 @@ class _DetailUpdatePageState extends State<DetailUpdatePage> {
               controller: _updateNameController,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: greyStyle1,
-                hintText: '식별할 수 있는 이름을 입력하세요',
+                fillColor: whiteStyle2,
+                hintText: widget.usersensor.sensorid,
                 contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide.none,

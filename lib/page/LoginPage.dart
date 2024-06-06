@@ -158,11 +158,8 @@ class _LoginPageState extends State<LoginPage> {
 
     // 로그인 로직
     if (_isIdAvailable) {
-      // 유저 정보 받아와서 provider에 저장
       User user = await fetchUserData(id);
       Provider.of<UserProvider>(context, listen: false).setUser(user);
-
-      // 메인페이지로 이동
       _goToMainPage(user);
     } else {
       showDialog(
@@ -234,99 +231,148 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteStyle1,
-      appBar: AppBar(
-        backgroundColor: whiteStyle1,
-        title: Text('로그인'),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Image.asset(
-                'assets/images/app_icon.png',
-                height: 300,
-                width: MediaQuery.of(context).size.width,
-              ),
-              SizedBox(height: 46.0),
-              TextField(
-                controller: _idController,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: greyStyle1,
-                  hintText: '아이디를 입력하세요',
-                  contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide.none,
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide.none
-                  ),
-                  prefixStyle: TextStyle(color: Colors.grey,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16),
-                ),
-                style: TextStyle(fontSize: 18),
-              ),
-              SizedBox(height: 12.0),
-              TextField(
-                controller: _passwordController,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: greyStyle1,
-                  hintText: '비밀번호를 입력하세요',
-                  contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide.none,
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide.none
-                  ),
-                  prefixStyle: TextStyle(
-                      color: Colors.grey, fontWeight: FontWeight.bold),
-                ),
-                obscureText: true,
-                style: TextStyle(fontSize: 18),
-              ),
-              SizedBox(height: 46.0),
-              ElevatedButton(
-                onPressed: _login,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: blueStyle3,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: Text(
-                  '로그인',
-                  style: TextStyle(
-                      color: blackStyle1,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20
-                  ),
-                ),
-              ),
-              SizedBox(height: 8.0),
-              ElevatedButton(
-                onPressed: _goToSignUpPage,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: blueStyle3,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: Text(
-                  '회원가입',
-                  style: TextStyle(
-                      color: blackStyle1,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20
-                  ),
-                ),
-              ),
+      body: Container(
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height * 3/4,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              blueStyle5,
+              blueStyle6,
             ],
+            stops: [0.2, 0.8],
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                SizedBox(height: 100.0),
+                Center(
+                  child: Text(
+                    'My Car',
+                    style: TextStyle(
+                      color: whiteStyle2,
+                      fontSize: 48,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 100.0),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  child: TextField(
+                    controller: _idController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: whiteStyle1,
+                      hintText: '아이디를 입력하세요',
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.person,
+                        color: blackStyle1,
+                      ),
+                      prefixIconConstraints: BoxConstraints(
+                        minWidth: 40,
+                      ),
+                      prefixStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+                SizedBox(height: 20.0),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  child: TextField(
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: whiteStyle1,
+                      hintText: '비밀번호를 입력하세요',
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.lock,
+                        color: blackStyle1,
+                      ),
+                      prefixIconConstraints: BoxConstraints(
+                        minWidth: 40,
+                      ),
+                      prefixStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    style: TextStyle(fontSize: 18),
+                    obscureText: true,
+                  ),
+                ),
+                SizedBox(height: 40.0),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  child: ElevatedButton(
+                    onPressed: _login,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: blueStyle5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: Text(
+                      '로그인',
+                      style: TextStyle(
+                        color: whiteStyle2,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  child: ElevatedButton(
+                    onPressed: _goToSignUpPage,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: blueStyle5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: Text(
+                      '회원가입',
+                      style: TextStyle(
+                        color: whiteStyle2,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

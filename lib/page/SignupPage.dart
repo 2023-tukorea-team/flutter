@@ -122,10 +122,8 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteStyle1,
       appBar: AppBar(
-        backgroundColor: whiteStyle1,
-        title: Text('회원가입'),
+        title : Text('회원가입'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -141,29 +139,25 @@ class _SignUpPageState extends State<SignUpPage> {
                       controller: _idController,
                       decoration: InputDecoration(
                         filled: true,
-                        fillColor: greyStyle1,
+                        fillColor: whiteStyle2,
                         hintText: '아이디',
                         contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide.none,
                         ),
                         focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none
+                          borderSide: BorderSide.none,
                         ),
-                        prefixStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16),
+                        prefixStyle: TextStyle(color: whiteStyle2, fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       style: TextStyle(fontSize: 18),
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(
                             RegExp(r'[a-zA-Z0-9]')),
-                        // 영어와 숫자만 허용
                         LengthLimitingTextInputFormatter(12),
-                        // 최대 길이 설정
                         FilteringTextInputFormatter.deny(RegExp(r'\s')),
-                        // 공백 입력 방지
                       ],
                       onChanged: (value) {
-                        // 입력값이 변경될 때마다 제약조건을 확인하여 상태 업데이트
                         setState(() {
                           _isIdLength = value.length >= 6 && value.length <= 12;
                           _isIdCheck = false;
@@ -182,7 +176,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: blueStyle4,
+                      backgroundColor: blueStyle3,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -190,7 +184,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: Text(
                       '중복 확인',
                       style: TextStyle(
-                        color: blackStyle1,
+                        color: whiteStyle2,
                         fontWeight: FontWeight.w400,
                         fontSize: 18
                       )
@@ -229,7 +223,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 controller: _passwordController,
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: greyStyle1,
+                  fillColor: whiteStyle2,
                   hintText: '비밀번호',
                   contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
                   enabledBorder: UnderlineInputBorder(
@@ -244,14 +238,10 @@ class _SignUpPageState extends State<SignUpPage> {
                 obscureText: true,
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(12),
-                  // 최대 길이 설정
                   FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
-                  // 영어와 숫자만 허용
                   FilteringTextInputFormatter.deny(RegExp(r'\s')),
-                  // 공백 입력 방지
                 ],
                 onChanged: (value) {
-                  // 입력값이 변경될 때마다 제약조건을 확인하여 상태 업데이트
                   setState(() {
                     _isPasswordLength = value.length >= 6 && value.length <= 12;
                     _isPasswordCheck = _passwordController.text ==
@@ -280,7 +270,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 controller: _passwordCheckController,
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: greyStyle1,
+                  fillColor: whiteStyle2,
                   hintText: '비밀번호 확인',
                   contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
                   enabledBorder: UnderlineInputBorder(
@@ -295,14 +285,10 @@ class _SignUpPageState extends State<SignUpPage> {
                 obscureText: true,
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(12),
-                  // 최대 길이 설정
                   FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
-                  // 영어와 숫자만 허용
                   FilteringTextInputFormatter.deny(RegExp(r'\s')),
-                  // 공백 입력 방지
                 ],
                 onChanged: (value) {
-                  // 입력값이 변경될 때마다 제약조건을 확인하여 상태 업데이트
                   setState(() {
                     _isPasswordCheck = _passwordController.text ==
                         _passwordCheckController.text;
@@ -330,7 +316,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 controller: _nameController,
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: greyStyle1,
+                  fillColor: whiteStyle2,
                   hintText: '이름',
                   contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
                   enabledBorder: UnderlineInputBorder(
@@ -351,7 +337,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       controller: _emailController,
                       decoration: InputDecoration(
                         filled: true,
-                        fillColor: greyStyle1,
+                        fillColor: whiteStyle2,
                         hintText: '이메일',
                         contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
                         enabledBorder: UnderlineInputBorder(
@@ -364,7 +350,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       style: TextStyle(fontSize: 18),
                       onChanged: (value) {
-                        // 입력값이 변경될 때마다 제약조건을 확인하여 상태 업데이트
                         setState(() {
                           String email = _emailController.text.trim();
                           _isEmailForm = _validateEmail(email);
@@ -384,7 +369,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: blueStyle4,
+                      backgroundColor: blueStyle3,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -392,7 +377,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: Text(
                       '중복 확인',
                       style: TextStyle(
-                          color: blackStyle1,
+                          color: whiteStyle2,
                           fontWeight: FontWeight.w400,
                           fontSize: 18
                       )
@@ -434,7 +419,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       controller: _phoneController,
                       decoration: InputDecoration(
                         filled: true,
-                        fillColor: greyStyle1,
+                        fillColor: whiteStyle2,
                         hintText: '전화번호',
                         contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
                         enabledBorder: UnderlineInputBorder(
@@ -467,7 +452,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: blueStyle4,
+                      backgroundColor: blueStyle3,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -475,7 +460,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: Text(
                         '중복 확인',
                         style: TextStyle(
-                            color: blackStyle1,
+                            color: whiteStyle2,
                             fontWeight: FontWeight.w400,
                             fontSize: 18
                         )
@@ -595,7 +580,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: blueStyle3,
+                  backgroundColor: blueStyle5,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -603,7 +588,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: Text(
                     '회원가입',
                     style: TextStyle(
-                    color: blackStyle1,
+                    color: whiteStyle2,
                     fontWeight: FontWeight.w600,
                     fontSize: 20,
                   ),

@@ -3,14 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:team2/page/DetailUpdatePage.dart';
 
 import '../config/ApiConfig.dart';
 import '../models/User.dart';
 import '../theme/Colors.dart';
 import 'BottomBar.dart';
-import 'LoginPage.dart';
-import 'MainPage.dart';
 
 class ChangePwPage extends StatefulWidget {
   final User user;
@@ -112,9 +109,7 @@ class _ChangePwPageState extends State<ChangePwPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteStyle1,
       appBar: AppBar(
-        backgroundColor: whiteStyle1,
         title: Text('비밀번호 변경'),
       ),
       body: Padding(
@@ -126,7 +121,7 @@ class _ChangePwPageState extends State<ChangePwPage> {
               controller: _ChangePwController,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: greyStyle1,
+                fillColor: whiteStyle2,
                 hintText: '변경할 비밀번호를 입력하세요',
                 contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
                 enabledBorder: UnderlineInputBorder(
@@ -154,7 +149,7 @@ class _ChangePwPageState extends State<ChangePwPage> {
             ElevatedButton(
               onPressed: _changePw,
               style: ElevatedButton.styleFrom(
-                backgroundColor: blueStyle3,
+                backgroundColor: blueStyle5,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -162,7 +157,7 @@ class _ChangePwPageState extends State<ChangePwPage> {
               child: Text(
                 '비밀번호 변경',
                 style: TextStyle(
-                    color: blackStyle1,
+                    color: whiteStyle2,
                     fontWeight: FontWeight.w600,
                     fontSize: 20
                 ),

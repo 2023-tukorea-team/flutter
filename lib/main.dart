@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:team2/provider/UserProvider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:team2/theme/Colors.dart';
 
 import 'config/NaverMapConfig.dart';
 import 'config/firebase_options.dart';
@@ -52,6 +53,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        scaffoldBackgroundColor: blueStyle6,
+        appBarTheme: AppBarTheme(
+          backgroundColor: blueStyle5,
+          centerTitle: true,
+          toolbarHeight: 80,
+          titleTextStyle: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 32,
+            color: whiteStyle2,
+          ),
+          iconTheme: IconThemeData(color: whiteStyle2),
+        ),
         textTheme: TextTheme(
           bodyText1: TextStyle(
             fontFamily: "Pretendard",

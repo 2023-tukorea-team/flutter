@@ -27,8 +27,7 @@ class _MapPageState extends State<MapPage> {
   double latitude = 37.340523;
   double longitude = 126.734424;
   List<Sensor> sensorData = [];
-  String address = "주소 보기";
-  bool isAddressShown = false;
+  String address = "";
 
   @override
   void initState() {
@@ -44,6 +43,7 @@ class _MapPageState extends State<MapPage> {
     );
     if (response.statusCode == 200) {
       List<dynamic> sensorlogJsonList = json.decode(response.body);
+      findAddress(sensorlogJsonList[0]['latitude'], sensorlogJsonList[0]['longitude']);
       return sensorlogJsonList.map((json) => Sensor.fromJson(json)).toList();
     } else {
       throw Exception('서버로부터 데이터를 읽어오는 데 실패했습니다.');
@@ -52,7 +52,8 @@ class _MapPageState extends State<MapPage> {
 
   Future<String> findAddress(double lat, double lng) async {
     final response = await http.get(
-      Uri.parse("https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc?request=coordsToaddr&coords=$lng,$lat&sourcecrs=epsg:4326&output=json&orders=roadaddr"),
+      Uri.parse(
+          "https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc?request=coordsToaddr&coords=$lng,$lat&sourcecrs=epsg:4326&output=json&orders=roadaddr"),
       headers: {
         "X-NCP-APIGW-API-KEY-ID": NaverMapConfig.ClientID,
         "X-NCP-APIGW-API-KEY": NaverMapConfig.ClientSecret
@@ -73,11 +74,18 @@ class _MapPageState extends State<MapPage> {
       String landNumber2 = land['number2'];
       String buildingName = land['addition0']['value'];
 
-      if (landNumber2 == '')
+      if (landNumber2 == '') {
+        setState(() {
+          address = '$area1 $area2 $area3 $landName $landNumber1 $buildingName';
+        });
         return '$area1 $area2 $area3 $landName $landNumber1 $buildingName';
-      else
+      } else {
+        setState(() {
+          address = '$area1 $area2 $area3 $landName $landNumber1-$landNumber2 $buildingName';
+        });
         return '$area1 $area2 $area3 $landName $landNumber1-$landNumber2 $buildingName';
-    } else {
+      }
+      } else {
       return "잘못된 주소입니다";
     }
   }
@@ -85,117 +93,146 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteStyle1,
       appBar: AppBar(
-        backgroundColor: whiteStyle1,
         title: Text('현재 위치 조회'),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            height: 400,
-            child: FutureBuilder<List<Sensor>>(
-              future: sensorDataFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('데이터를 불러오는 중에 오류가 발생했습니다.'));
-                } else {
-                  sensorData = snapshot.data!;
-                  if (sensorData.isNotEmpty) {
-                    latitude = sensorData.first.latitude;
-                    longitude = sensorData.first.longitude;
-                  }
-                  return NaverMap(
-                    options: NaverMapViewOptions(
-                      initialCameraPosition: NCameraPosition(
-                        target: NLatLng(latitude, longitude),
-                        zoom: 15,
-                        bearing: 0,
-                        tilt: 0,
-                      ),
-                    ),
-                    onMapReady: (controller) {
-                      for (var sensor in sensorData) {
-                        final marker = NMarker(
-                          id: sensor.id.toString(),
-                          position: NLatLng(sensor.latitude, sensor.longitude),
-                        );
-                        controller.addOverlay(marker);
-                        final onMarkerInfoWindow = NInfoWindow.onMarker(
-                          id: marker.info.id,
-                          text: widget.usersensor.name,
-                        );
-                        marker.openInfoWindow(onMarkerInfoWindow);
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                " 실시간 내 차 위치",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                ),
+              ),
+              SizedBox(height: 8.0),
+              Container(
+                height: 400,
+                child: FutureBuilder<List<Sensor>>(
+                  future: sensorDataFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('데이터를 불러오는 중에 오류가 발생했습니다.'));
+                    } else {
+                      sensorData = snapshot.data!;
+                      if (sensorData.isNotEmpty) {
+                        latitude = sensorData.first.latitude;
+                        longitude = sensorData.first.longitude;
                       }
-                    },
-                  );
-                }
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                SizedBox(height: 4),
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    side: BorderSide(color: Colors.blueGrey, width: 1),
-                  ),
-                  color: blueStyle4,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ListTile(
-                          title: Text(
-                            ' - 위도 : $latitude',
-                            style: TextStyle(fontSize: 18),
+                      return NaverMap(
+                        options: NaverMapViewOptions(
+                          initialCameraPosition: NCameraPosition(
+                            target: NLatLng(latitude, longitude),
+                            zoom: 15,
+                            bearing: 0,
+                            tilt: 0,
                           ),
                         ),
-                        ListTile(
-                          title: Text(
-                            ' - 경도 : $longitude',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                        onMapReady: (controller) {
+                          for (var sensor in sensorData) {
+                            final marker = NMarker(
+                              id: sensor.id.toString(),
+                              position: NLatLng(
+                                  sensor.latitude, sensor.longitude),
+                            );
+                            controller.addOverlay(marker);
+                            final onMarkerInfoWindow = NInfoWindow.onMarker(
+                              id: marker.info.id,
+                              text: widget.usersensor.name,
+                            );
+                            marker.openInfoWindow(onMarkerInfoWindow);
+                          }
+                        },
+                      );
+                    }
+                  },
                 ),
-                SizedBox(height: 8),
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    side: BorderSide(color: Colors.blueGrey, width: 1),
-                  ),
-                  color: isAddressShown ? blueStyle4 : blueStyle3,
-                  child: ListTile(
-                    title: Text(
-                      address,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: isAddressShown ? FontWeight.w400 : FontWeight.w600,
+              ),
+              SizedBox(height: 20),
+              Text(
+                " 좌표 및 주소",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                ),
+                textAlign: TextAlign.left,
+              ),
+              SizedBox(height: 4),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 0.0),
+                child: Column(
+                  children: [
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        side: BorderSide(color: Colors.grey, width: 1.0),
                       ),
-                      textAlign: isAddressShown ? TextAlign.left : TextAlign.center,
+                      color: blueStyle4,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ListTile(
+                              tileColor: whiteStyle2,
+                              title: Text(
+                                ' - 위도 : $latitude',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            ),
+                            _buildDivider(),
+                            ListTile(
+                              tileColor: whiteStyle2,
+                              title: Text(
+                                ' - 경도 : $longitude',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                    onTap: () async {
-                      String addr = await findAddress(latitude, longitude);
-                      setState(() {
-                        address = addr;
-                        isAddressShown = true;
-                      });
-                    },
-                  ),
+                    SizedBox(height: 8),
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(color: Colors.grey, width: 1),
+                      ),
+                      child: ListTile(
+                        tileColor: whiteStyle2,
+                        title: Text(
+                          address,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDivider() {
+    return Align(
+      alignment: Alignment.center,
+      child: Container(
+        width: MediaQuery
+            .of(context).size.width,
+        height: 1,
+        color: whiteStyle3,
       ),
     );
   }

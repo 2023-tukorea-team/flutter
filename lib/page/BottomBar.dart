@@ -38,12 +38,11 @@ class _BottomBarState extends State<BottomBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteStyle1,
       body: SafeArea(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: whiteStyle1,
+        backgroundColor: whiteStyle2,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home, size:32),
@@ -56,7 +55,7 @@ class _BottomBarState extends State<BottomBar> {
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        selectedItemColor: blueStyle3,
+        selectedItemColor: blueStyle5,
         selectedLabelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         unselectedLabelStyle: TextStyle(fontSize: 14),
       ),

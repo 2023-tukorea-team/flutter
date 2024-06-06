@@ -10,7 +10,6 @@ import '../models/User.dart';
 import '../models/Usersensor.dart';
 import '../theme/Colors.dart';
 import 'BottomBar.dart';
-import 'DetailUpdatePage.dart';
 import 'LogPage.dart';
 
 class DetailPage extends StatefulWidget {
@@ -69,27 +68,6 @@ class _DetailPageState extends State<DetailPage> {
     }
   }
 
-  Future<bool> deleteData(String userid, String sensorid) async {
-    final response = await http.post(
-      Uri.parse('$url/usersensor/delete'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'userid': userid, 'sensorid': sensorid}),
-    );
-
-    if (response.statusCode == 200) {
-      Map<String, dynamic> jsonData = jsonDecode(
-          utf8.decode(response.bodyBytes));
-      bool result = jsonData['result'];
-      String description = jsonData['description'];
-      print(result);
-      print(description);
-      return result;
-    } else {
-      print("삭제 중 오류가 발생했습니다 (${response.statusCode})");
-      return false;
-    }
-  }
-
   void refreshData() {
     setState(() {
       _sensorlogFuture = fetchSensorlogData();
@@ -101,45 +79,20 @@ class _DetailPageState extends State<DetailPage> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: whiteStyle1,
         appBar: AppBar(
-          backgroundColor: whiteStyle1,
-          title: Row(
-            children: [
-              Expanded(
-                child: GestureDetector(
-                  child: Text(
-                    widget.usersensor!.name,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ),
-              IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () {
-                  deleteData(widget.usersensor!.userid, widget.usersensor!.sensorid).then((deleteSuccess) {
-                    if (deleteSuccess) {
-                      _goToMainPage(widget.user);
-                    }
-                  });
-                }
-              ),
-              IconButton(
-                icon: Icon(Icons.refresh),
-                onPressed: () {
-                  refreshData();
-                },
-              ),
-            ],
-          ),
+          title: Text(widget.usersensor.name),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.refresh),
+              onPressed: () {
+                refreshData();
+              },
+            ),
+          ],
           bottom: TabBar(
-            indicator: BoxDecoration(),
-            labelColor: blueStyle3,
-            unselectedLabelColor: Colors.black,
+            indicatorColor: whiteStyle2,
+            labelColor: blueStyle4,
+            unselectedLabelColor: whiteStyle1,
             labelStyle: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -181,10 +134,10 @@ class _DetailPageState extends State<DetailPage> {
             itemBuilder: (context, index) {
               final sensorlog = filteredLogs[index];
               return Card(
-                color: blueStyle4,
+                color: whiteStyle2,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
-                  side: BorderSide(color: Colors.blueGrey, width: 1),
+                  side: BorderSide(color: Colors.grey, width: 1),
                 ),
                 child: ListTile(
                   title: Padding(
@@ -225,10 +178,10 @@ class _DetailPageState extends State<DetailPage> {
             itemBuilder: (context, index) {
               final sensorlog = snapshot.data![index];
               return Card(
-                color: blueStyle4,
+                color: whiteStyle2,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
-                  side: BorderSide(color: Colors.blueGrey, width: 1),
+                  side: BorderSide(color: Colors.grey, width: 1),
                 ),
                 child: ListTile(
                   title: Padding(

@@ -7,9 +7,9 @@ import 'package:http/http.dart' as http;
 import 'package:team2/config/ApiConfig.dart';
 
 import '../models/User.dart';
+import '../models/Usersensor.dart';
 import '../theme/Colors.dart';
 import 'BottomBar.dart';
-import 'MainPage.dart';
 
 class AddSensorPage extends StatefulWidget {
   final User user;
@@ -28,7 +28,13 @@ class _AddSensorPageState extends State<AddSensorPage> {
   String url = ApiConfig.baseUrl;
   String? sensorid = '';
   bool _isCheckMacAddress = false; // 인증번호 입력 창 보이게 하기
+  List<Usersensor> _usersensorData = [];
 
+  @override
+  void initState() {
+    super.initState();
+    getRecheckSensor(widget.user.id);
+  }
 
   @override
   void dispose() {
@@ -92,6 +98,59 @@ class _AddSensorPageState extends State<AddSensorPage> {
     }
   }
 
+  Future<bool> getRecheckSensor(String userid) async {
+    final response = await http.post(
+      Uri.parse('$url/usersensor/recheck/get'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'userid': userid}),
+    );
+
+    if (response.statusCode == 200) {
+      String responseBody = utf8.decode(response.bodyBytes);
+      List<dynamic> usersensorJsonList = json.decode(responseBody);
+      List<Usersensor> newData = usersensorJsonList.map((json) => Usersensor.fromJson(json)).toList();
+      setState(() {
+        _usersensorData = newData;
+      });
+      return true;
+    } else {
+      print("데이터를 가져 오는 중 오류가 발생했습니다 (${response.statusCode})");
+      return false;
+    }
+  }
+
+  Future<bool> addRecheckSensor(String userid, String sensorid) async {
+    final response = await http.post(
+      Uri.parse('$url/usersensor/recheck/add'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'userid': userid, 'sensorid' : sensorid}),
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> jsonData = jsonDecode(
+          utf8.decode(response.bodyBytes));
+      bool result = jsonData['result'];
+      return result;
+    } else {
+      print("연결하는 중 오류가 발생했습니다 (${response.statusCode})");
+      return false;
+    }
+  }
+
+  void _reconnect(String userid, String sensorid) async {
+    bool isReconnect = await addRecheckSensor(userid, sensorid);
+    if (isReconnect) {
+      _showSuccessDialog("연결 성공", "연결에 성공했습니다");
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('연결에 실패했습니다.'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
   void _goToMainPage(User user) {
     Navigator.push(
       context,
@@ -109,9 +168,7 @@ class _AddSensorPageState extends State<AddSensorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteStyle1,
       appBar: AppBar(
-        backgroundColor: whiteStyle1,
         title: Text('기기 연결'),
       ),
       body: SingleChildScrollView(
@@ -128,35 +185,30 @@ class _AddSensorPageState extends State<AddSensorPage> {
                       controller: _macAddressController,
                       decoration: InputDecoration(
                         filled: true,
-                        fillColor: greyStyle1,
+                        fillColor: whiteStyle2,
                         hintText: '맥주소를 입력하세요',
                         contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
-                        enabledBorder: UnderlineInputBorder(
+                        enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide.none,
                         ),
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
                         ),
                         prefixStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
                       ),
                       style: TextStyle(fontSize: 18),
                       inputFormatters: [
-                        FilteringTextInputFormatter.allow(
-                            RegExp(r'[a-f0-9:]')),
-                        // 영어와 숫자만 허용
+                        FilteringTextInputFormatter.allow(RegExp(r'[a-f0-9:]')),
                         LengthLimitingTextInputFormatter(17),
-                        // 최대 길이 설정
                         FilteringTextInputFormatter.deny(RegExp(r'\s')),
-                        // 공백 입력 방지
                       ],
                       onChanged: (value) {
-                        // 입력값이 변경될 때마다 제약조건을 확인하여 상태 업데이트
                         setState(() {
                           String mac = _macAddressController.text.trim();
                           _isMacForm = validateMacAddress(mac);
                         });
                       },
-                    ),
+                    )
                   ),
                   SizedBox(width: 12.0),
                   ElevatedButton(
@@ -181,7 +233,7 @@ class _AddSensorPageState extends State<AddSensorPage> {
                     }
                         : null,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: blueStyle4,
+                      backgroundColor: blueStyle3,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -189,7 +241,7 @@ class _AddSensorPageState extends State<AddSensorPage> {
                     child: Text(
                         '인증번호 전송',
                         style: TextStyle(
-                            color: blackStyle1,
+                            color: whiteStyle2,
                             fontWeight: FontWeight.w400,
                             fontSize: 18
                         )
@@ -222,7 +274,7 @@ class _AddSensorPageState extends State<AddSensorPage> {
                         controller: _verificationController,
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: greyStyle1,
+                          fillColor: whiteStyle2,
                           hintText: '인증번호를 입력하세요',
                           contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
                           enabledBorder: UnderlineInputBorder(
@@ -280,8 +332,8 @@ class _AddSensorPageState extends State<AddSensorPage> {
                                         _goToMainPage(widget.user);
                                       },
                                       style: ButtonStyle(
-                                        foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                                        backgroundColor: MaterialStateProperty.all<Color>(blueStyle4),
+                                        foregroundColor: MaterialStateProperty.all<Color>(whiteStyle2),
+                                        backgroundColor: MaterialStateProperty.all<Color>(blueStyle5),
                                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                           RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(5.0),
@@ -330,7 +382,7 @@ class _AddSensorPageState extends State<AddSensorPage> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: blueStyle4,
+                        backgroundColor: blueStyle3,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -338,7 +390,7 @@ class _AddSensorPageState extends State<AddSensorPage> {
                       child: Text(
                           '인증번호 입력',
                           style: TextStyle(
-                              color: blackStyle1,
+                              color: whiteStyle2,
                               fontWeight: FontWeight.w400,
                               fontSize: 18
                           )
@@ -363,6 +415,61 @@ class _AddSensorPageState extends State<AddSensorPage> {
                   ],
                 ),
               ],
+              SizedBox(height: 40.0),
+              Text(
+                " 이전에 연결했던 기기",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                ),
+              ),
+              SizedBox(height: 4.0),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: _usersensorData.length,
+                itemBuilder: (context, index) {
+                  final usersensor = _usersensorData[index];
+                  return GestureDetector(
+                    onTap: () {
+                      _reconnect(usersensor.userid, usersensor.sensorid);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(8.0),
+                      margin: EdgeInsets.symmetric(vertical: 4.0),
+                      decoration: BoxDecoration(
+                        color: whiteStyle2,
+                        border: Border.all(color: Colors.grey, width: 1.0),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      usersensor.sensorid,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 24.0,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
@@ -388,5 +495,61 @@ class _AddSensorPageState extends State<AddSensorPage> {
   void _cancelTimer() {
     _timer?.cancel();
     _timer = null;
+  }
+
+  void _showSuccessDialog(String title, String content) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: blueStyle1,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          title: Text(
+              title,
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 32,
+              )
+          ),
+          content: Text(
+            content,
+            style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 16,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => (BottomBar(user: widget.user))),
+                      (Route<dynamic> route) => false,
+                );
+              },
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                backgroundColor: MaterialStateProperty.all<Color>(blueStyle4),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
+              ),
+              child: Text(
+                '확인',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
