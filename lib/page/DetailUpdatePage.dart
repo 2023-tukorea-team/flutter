@@ -114,7 +114,7 @@ class _DetailUpdatePageState extends State<DetailUpdatePage> {
             ElevatedButton(
               onPressed: _updateDetails,
               style: ElevatedButton.styleFrom(
-                backgroundColor: blueStyle3,
+                backgroundColor: blueStyle5,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -122,7 +122,7 @@ class _DetailUpdatePageState extends State<DetailUpdatePage> {
               child: Text(
                 '수정하기',
                 style: TextStyle(
-                    color: blackStyle1,
+                    color: whiteStyle2,
                     fontWeight: FontWeight.w600,
                     fontSize: 20
                 ),

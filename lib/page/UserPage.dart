@@ -269,7 +269,7 @@ class _UserPageState extends State<UserPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: blueStyle1,
+          backgroundColor: dialogback,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),
@@ -291,12 +291,11 @@ class _UserPageState extends State<UserPage> {
             TextButton(
               onPressed: () {
                 _withdraw();
-                print("withdraw1");
                 Navigator.of(context).pop();
               },
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                backgroundColor: MaterialStateProperty.all<Color>(blueStyle4),
+                foregroundColor: MaterialStateProperty.all<Color>(dialogback),
+                backgroundColor: MaterialStateProperty.all<Color>(dialogyes),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0),
@@ -316,8 +315,8 @@ class _UserPageState extends State<UserPage> {
                 Navigator.of(context).pop();
               },
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.redAccent),
+                foregroundColor: MaterialStateProperty.all<Color>(dialogback),
+                backgroundColor: MaterialStateProperty.all<Color>(dialogno),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0),
@@ -343,7 +342,7 @@ class _UserPageState extends State<UserPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: blueStyle1,
+          backgroundColor: dialogback,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),
@@ -372,8 +371,8 @@ class _UserPageState extends State<UserPage> {
                 );
               },
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                backgroundColor: MaterialStateProperty.all<Color>(blueStyle4),
+                foregroundColor: MaterialStateProperty.all<Color>(dialogback),
+                backgroundColor: MaterialStateProperty.all<Color>(dialogyes),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0),

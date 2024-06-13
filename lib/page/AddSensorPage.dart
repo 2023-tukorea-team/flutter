@@ -307,7 +307,7 @@ class _AddSensorPageState extends State<AddSensorPage> {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  backgroundColor: blueStyle1,
+                                  backgroundColor: dialogback,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20.0),
                                   ),
@@ -332,8 +332,8 @@ class _AddSensorPageState extends State<AddSensorPage> {
                                         _goToMainPage(widget.user);
                                       },
                                       style: ButtonStyle(
-                                        foregroundColor: MaterialStateProperty.all<Color>(whiteStyle2),
-                                        backgroundColor: MaterialStateProperty.all<Color>(blueStyle5),
+                                        foregroundColor: MaterialStateProperty.all<Color>(dialogback),
+                                        backgroundColor: MaterialStateProperty.all<Color>(dialogyes),
                                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                           RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(5.0),
@@ -502,7 +502,7 @@ class _AddSensorPageState extends State<AddSensorPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: blueStyle1,
+          backgroundColor: dialogback,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),
@@ -531,8 +531,8 @@ class _AddSensorPageState extends State<AddSensorPage> {
                 );
               },
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                backgroundColor: MaterialStateProperty.all<Color>(blueStyle4),
+                foregroundColor: MaterialStateProperty.all<Color>(dialogback),
+                backgroundColor: MaterialStateProperty.all<Color>(dialogyes),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0),

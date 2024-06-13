@@ -16,3 +16,7 @@ const blueStyle5 = Color.fromRGBO(4,4,180,1); // 앱 바 색상 + 버튼 색상
 const blueStyle6 = Color.fromRGBO(238,233,250,1);// 백그라운드 배경 (메인)
 
 const whiteStyle3 = Color.fromRGBO(190,198,205,1);// 카드 사이 가르는 거
+
+const dialogno = Color.fromRGBO(255,69,0,1); // No
+const dialogyes = Color.fromRGBO(4,4,180,1); // Yes
+const dialogback = Color.fromRGBO(244,244,244,1); // backgroud

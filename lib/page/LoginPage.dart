@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              backgroundColor: blueStyle1,
+              backgroundColor: dialogback,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
@@ -83,9 +83,9 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   style: ButtonStyle(
                     foregroundColor: MaterialStateProperty.all<Color>(
-                        Colors.black),
+                        dialogback),
                     backgroundColor: MaterialStateProperty.all<Color>(
-                        blueStyle4),
+                        dialogyes),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.0),
@@ -166,7 +166,7 @@ class _LoginPageState extends State<LoginPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            backgroundColor: blueStyle1,
+            backgroundColor: dialogback,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
             ),
@@ -191,8 +191,8 @@ class _LoginPageState extends State<LoginPage> {
                 },
                 style: ButtonStyle(
                   foregroundColor: MaterialStateProperty.all<Color>(
-                      Colors.black),
-                  backgroundColor: MaterialStateProperty.all<Color>(blueStyle4),
+                      dialogback),
+                  backgroundColor: MaterialStateProperty.all<Color>(dialogyes),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5.0),

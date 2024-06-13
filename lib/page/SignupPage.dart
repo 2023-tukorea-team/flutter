@@ -525,7 +525,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            backgroundColor: blueStyle1,
+                            backgroundColor: dialogback,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20.0),
                             ),
@@ -549,8 +549,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                   Navigator.of(context).pop();
                                 },
                                 style: ButtonStyle(
-                                  foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                                  backgroundColor: MaterialStateProperty.all<Color>(blueStyle4),
+                                  foregroundColor: MaterialStateProperty.all<Color>(dialogback),
+                                  backgroundColor: MaterialStateProperty.all<Color>(dialogyes),
                                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5.0),

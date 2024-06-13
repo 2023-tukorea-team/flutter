@@ -30,7 +30,7 @@ class _ChangePwPageState extends State<ChangePwPage> {
           showDialog(
             context: context, builder: (BuildContext) {
             return AlertDialog(
-              backgroundColor: blueStyle1,
+              backgroundColor: dialogback,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
@@ -54,8 +54,8 @@ class _ChangePwPageState extends State<ChangePwPage> {
                     _goToMainPage(widget.user.id);
                   },
                   style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                    backgroundColor: MaterialStateProperty.all<Color>(blueStyle4),
+                    foregroundColor: MaterialStateProperty.all<Color>(dialogback),
+                    backgroundColor: MaterialStateProperty.all<Color>(dialogyes),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.0),
