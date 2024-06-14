@@ -79,16 +79,18 @@ class _DetailPageState extends State<DetailPage> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(widget.usersensor.name),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.refresh),
-              onPressed: () {
-                refreshData();
-              },
-            ),
-          ],
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(80),
+          child: AppBar(
+            title: Text(widget.usersensor.name),
+            actions: [
+              IconButton(
+                icon: Icon(Icons.refresh),
+                onPressed: () {
+                  refreshData();
+                },
+              ),
+            ],
           bottom: TabBar(
             indicatorColor: whiteStyle2,
             labelColor: blueStyle4,
@@ -104,6 +106,7 @@ class _DetailPageState extends State<DetailPage> {
               Tab(text: '알림 기록'),
               Tab(text: '로그 기록'),
             ],
+          ),
           ),
         ),
         body: TabBarView(

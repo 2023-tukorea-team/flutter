@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:team2/config/ApiConfig.dart';
 import 'package:http/http.dart' as http;
+import 'package:team2/page/DashboardPage.dart';
 import 'package:team2/theme/Colors.dart';
 
 import '../models/Sensorlog.dart';
@@ -153,6 +154,18 @@ class _DetailListPageState extends State<DetailListPage> {
                 ),
                 child: Column(
                   children: [
+                    ListTile(
+                      leading: Icon(Icons.analytics),
+                      tileColor: whiteStyle2,
+                      title: Text('대시보드 조회'),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => DashboardPage(usersensor: widget.usersensor, user: widget.user)),
+                        );
+                      },
+                    ),
+                    _buildDivider(),
                     ListTile(
                       leading: Icon(Icons.location_on),
                       tileColor: whiteStyle2,

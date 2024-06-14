@@ -46,7 +46,7 @@ class _BottomBarState extends State<BottomBar> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home, size:32),
-            label: '홈',
+            label: '내 차',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.text_snippet, size: 32),

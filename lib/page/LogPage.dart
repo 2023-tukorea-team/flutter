@@ -113,12 +113,8 @@ class _LogPageState extends State<LogPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center, // Row 내에서 자식을 가운데 정렬
         children: [
-          Text(
-            leftText,
-            style: TextStyle(fontSize: 16),
-          ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(

@@ -96,6 +96,7 @@ class _UserPageState extends State<UserPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text("마이 페이지"),
+          automaticallyImplyLeading: false,
         ),
         body: SingleChildScrollView(
           child: Padding(

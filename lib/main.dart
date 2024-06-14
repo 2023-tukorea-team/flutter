@@ -65,20 +65,6 @@ class MyApp extends StatelessWidget {
           ),
           iconTheme: IconThemeData(color: whiteStyle2),
         ),
-        textTheme: TextTheme(
-          bodyText1: TextStyle(
-            fontFamily: "Pretendard",
-            fontWeight: FontWeight.w400,
-          ),
-          button: TextStyle(
-            fontFamily: "Pretendard",
-            fontWeight: FontWeight.w400,
-          ),
-          headline6: TextStyle(
-            fontFamily: "Pretendard",
-            fontWeight: FontWeight.w400,
-          )
-        ),
         fontFamily: "Pretendard",
       ),
       home: LoginPage(),
