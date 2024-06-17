@@ -113,32 +113,32 @@ class _DetailListPageState extends State<DetailListPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                " 최근 내차 정보",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20.0,
-                ),
-              ),
-              SizedBox(height: 8.0),
-              Container(
-                padding: EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: whiteStyle2,
-                  border: Border.all(color: Colors.grey, width: 1.0),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _buildRow("문 닫힘 여부", doorState, "닫힘", "열림"),
-                    _buildRow("시동 켜짐 여부", startState, "켜짐", "꺼짐"),
-                    _buildRow("인체 감지 여부", personState, "감지", "없음"),
-                    _buildRowInt("속도", speedState),
-                  ],
-                ),
-              ),
-              SizedBox(height: 24.0),
+              // Text(
+              //   " 최근 내차 정보",
+              //   style: TextStyle(
+              //     fontWeight: FontWeight.bold,
+              //     fontSize: 20.0,
+              //   ),
+              // ),
+              // SizedBox(height: 8.0),
+              // Container(
+              //   padding: EdgeInsets.all(8.0),
+              //   decoration: BoxDecoration(
+              //     color: whiteStyle2,
+              //     border: Border.all(color: Colors.grey, width: 1.0),
+              //     borderRadius: BorderRadius.circular(8.0),
+              //   ),
+              //   child: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.stretch,
+              //     children: [
+              //       _buildRow("문 닫힘 여부", doorState, "닫힘", "열림"),
+              //       _buildRow("시동 켜짐 여부", startState, "켜짐", "꺼짐"),
+              //       _buildRow("인체 감지 여부", personState, "감지", "없음"),
+              //       _buildRowInt("속도", speedState),
+              //     ],
+              //   ),
+              // ),
+              // SizedBox(height: 24.0),
               Text(
                 " 조회",
                 style: TextStyle(
@@ -157,7 +157,7 @@ class _DetailListPageState extends State<DetailListPage> {
                     ListTile(
                       leading: Icon(Icons.analytics),
                       tileColor: whiteStyle2,
-                      title: Text('대시보드 조회'),
+                      title: Text('실시간 조회'),
                       onTap: () {
                         Navigator.push(
                           context,

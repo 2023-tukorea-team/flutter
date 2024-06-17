@@ -146,7 +146,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('대시보드 조회'),
+        title: Text('실시간 조회'),
       ),
       body: Padding(
         padding: EdgeInsets.all(4.0),
